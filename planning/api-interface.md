@@ -1,18 +1,28 @@
-DocHub API
+# DocHub API
 
-Resources:
-documents
-keywords
-categories
-locations
+## Resources:
+* documents
+* tags (keywords, categories, locations)
+* files
 
-GET /documents
-GET /documents/:id
-POST /documents
-PUT /documents/:id
-DELETE /documents/:id
+---
+## Documents
+### GET /documents
+### GET /documents/:id
+### POST /documents
+### PUT /documents/:id
+### DELETE /documents/:id
+---
+## Tags
 
-GET /tags?type=
-POST /tags
-DELETE /tags/:id
-
+### GET /tags[?type=]
+Get all tags or filter by type (keywords, categories, locations etc.)
+### POST /tags
+Post a new tag
+```{ tag, type }```
+### DELETE /tags/:id
+---
+## Files
+### GET /files/:id
+### POST /files/
+### DELETE /files/:id
