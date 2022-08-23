@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import './App.scss';
 
@@ -6,6 +6,7 @@ function App() {
   return (
     <div className="App">
       <Navigation />
+      <Outlet />
     </div>
   );
 }
