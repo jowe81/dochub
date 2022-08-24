@@ -1,1 +1,3 @@
 curl -X POST -H "Content-Type: application/json" -d '{"name": "Johannes", "email": "johannes@drweber.de"}' http://localhost:3000/users/
+
+curl -X POST -H "Content-Type: application/json" -d '{"email": "johannes@drweber.de"}' http://localhost:3000/session/login/
