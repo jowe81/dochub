@@ -1,22 +1,26 @@
 var express = require('express');
 var router = express.Router();
 
-const User = require('../db/User');
+const users = require('../modules/users');
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-  User.findAll().then(data => {
+  users.getAll().then(data => {
     console.log(data);
     res.json(data);
   })
 });
 
+/**
+ * Register a new user
+ */
 router.post("/", (req, res, next) => {
-  const { name, email, password } = req.body;
-  console.log(name, email, password);
-  User.create({name, email, password})
-    .then(() => {
-      res.json({ message: "OK!" });
+  const { name, email, plaintextPassword } = req.body;
+  users.create({name, email, plaintextPassword})
+    .then((user) => {
+      res.json(user);
+    })
+    .catch(e => {
+      res.status(500).send(`${e}`);
     });
 });
 
