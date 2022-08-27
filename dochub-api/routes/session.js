@@ -6,13 +6,16 @@ const User = require('../db/User');
 router.post("/login", (req, res, next) => {
   const email = req.body.email;
   User.findOne({ where: { email }})
-    .then(res.json)
+    .then(user => {
+      req.session.user = user;
+      res.json(user);
+    })
     .catch(next);
 });
 
 router.get("/logout", errorIfUnauthorized, (req, res) => {
-  const firstName = req.session.user.first_name;
-  res.end(`Goodbye, ${firstName}!`);
+  const name = req.session.user.name;
+  res.end(`Goodbye, ${name}!`);
   req.session = null;
 });
 

@@ -1,5 +1,10 @@
 var createError = require('http-errors');
-var express = require('express');
+
+const cookieSession = require("cookie-session");
+const express = require("express");
+const helmet = require("helmet");
+const cors = require("cors");
+
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -17,9 +22,18 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//Enable sessions
+app.set('trust proxy', 1); // trust first proxy
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(helmet());
+app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
