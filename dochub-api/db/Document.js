@@ -9,8 +9,6 @@ const Document = sequelize.define('Document', {
   },
   author: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
   },
 }, {
   // Other model options go here

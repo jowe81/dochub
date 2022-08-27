@@ -1,28 +1,19 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(`sqlite:${process.env.DBFILE}`);
 
-const User = sequelize.define('user', {
+const Category = sequelize.define('category', {
   // Model attributes are defined here
   name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING
-    // allowNull defaults to true
-  }
 }, {
   // Other model options go here
 });
 
 const Document = require('./Document');
-User.hasMany(Document);
-Document.belongsTo(User);
+Category.hasMany(Document);
+Document.belongsTo(Category);
 
 
-module.exports = User;
+module.exports = Category;

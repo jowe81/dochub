@@ -9,6 +9,23 @@ User.sync({force: true})
   })
   .then(() => {
     return users.create({name: "Jess", email: "jess@drweber.de", plaintextPassword: "12345" });
+  })
+  .then(() => {
+    console.log(`Done creating users`);
   });
+
 const Document = require('../db/Document');
 Document.sync({force: true});
+
+const categories = require('../modules/categories');
+const Category = require('../db/Category');
+Category.sync({force: true})
+  .then(() => {
+    return Category.create({name: "Audio"});
+  })
+  .then(() => {
+    return Category.create({name: "Lighting"});
+  })
+  .then(() => {
+    console.log(`Done creating categories`);
+  });

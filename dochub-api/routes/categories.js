@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
-const documents = require('../modules/documents');
+const categories = require('../modules/categories');
 
 router.get('/', function(req, res, next) {
-  documents.getAll().then(data => {
-    console.log(data);
+  categories.getAll().then(data => {
+    console.log(`Categories: `, data);
     res.json(data);
   })
 });
 
 router.get('/:id', function(req, res, next) {
-  documents.getOne(req.params.id).then(data => {
+  categories.getOne(req.params.id).then(data => {
     console.log(data);
     res.json(data);
   })
@@ -20,14 +20,13 @@ router.get('/:id', function(req, res, next) {
 
 
 /**
- * Post a new document
+ * Post a new category
  */
 router.post("/", (req, res, next) => {
-  const { title, author } = req.body;
-  console.log(req.session.user);
-  documents.create({title, author, userId: req.session.user.id})
-    .then((document) => {
-      res.json(document);
+  const { name } = req.body;
+  categories.create({name})
+    .then((category) => {
+      res.json(category);
     })
     .catch(e => {
       res.status(500).send(`${e}`);
