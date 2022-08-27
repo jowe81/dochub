@@ -22,7 +22,7 @@ const create = ({ title, author, categories, userId }) => {
 };
 
 const getAll = () => {
-  return db.Document.findAll();
+  return db.Document.findAll({ include: db.User });
 }
 
 const getOne = (documentId) => {
