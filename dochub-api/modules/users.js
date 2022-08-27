@@ -1,5 +1,5 @@
 const helpers = require("../modules/helpers");
-const User = require('../db/User');
+const db = require('../models');
 const bcrypt = require('bcrypt');
 
 /**
@@ -11,7 +11,7 @@ const create = ({ name, email, plaintextPassword }) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(plaintextPassword, 10, (err, password) => {
       if (err) reject(err);
-      User.create({name, email, password})
+      db.User.create({name, email, password})
         .then(resolve)
         .catch(reject);    
     })
@@ -19,7 +19,7 @@ const create = ({ name, email, plaintextPassword }) => {
 };
 
 const getAll = () => {
-  return User.findAll();
+  return db.User.findAll();
 }
 
 module.exports = {

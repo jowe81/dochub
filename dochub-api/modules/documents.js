@@ -1,26 +1,32 @@
 const helpers = require("../modules/helpers");
-const Document = require('../db/Document');
+const db = require('../models');
 
 /**
  * Create a document record
  * @param {name, email, plaintextPassword} 
  * @returns a Promise to the new user
  */
-const create = ({ title, author, userId }) => {
+const create = ({ title, author, categories, userId }) => {
   return new Promise((resolve, reject) => {
-    Document.create({ title, author, userId})
+    db.Document.create({ title, author, userId})
       .then(document => {
-        resolve(document);        
+        /*
+        document.addCategories(categories)
+          .then(document => {
+            resolve(document);        
+          });
+        */
+       resolve(document);
       });
   });
 };
 
 const getAll = () => {
-  return Document.findAll();
+  return db.Document.findAll();
 }
 
 const getOne = (documentId) => {
-  return Document.findByPk(documentId);
+  return db.Document.findByPk(documentId);
 }
 
 module.exports = {

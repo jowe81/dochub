@@ -12,8 +12,9 @@ const Category = sequelize.define('category', {
 });
 
 const Document = require('./Document');
-Category.hasMany(Document);
-Document.belongsTo(Category);
-
+//Category.hasMany(Document);
+//Document.belongsTo(Category);
+Category.belongsToMany(Document, { through: 'DocumentsCategories' });
+Document.belongsToMany(Category, { through: 'DocumentsCategories' });
 
 module.exports = Category;
