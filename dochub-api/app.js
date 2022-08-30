@@ -12,6 +12,8 @@ var logger = require('morgan');
 require('dotenv').config();
 require('./db/connection');
 
+const db = require('./models')
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var sessionRouter = require('./routes/session');

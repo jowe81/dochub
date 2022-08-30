@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const errorIfUnauthorized = require("../middleware/errorIfUnauthorized");
 
-const User = require('../db/User');
+const db = require('../models');
 
 router.post("/login", (req, res, next) => {
   const email = req.body.email;

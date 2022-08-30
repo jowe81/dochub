@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dbreset": "node ./bin/dbreset"
+    "dbreset": "./bin/dbreset"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

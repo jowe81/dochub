@@ -1,5 +1,5 @@
 const helpers = require("../modules/helpers");
-const Category = require('../db/Category');
+const db = require('../models');
 
 /**
  * Create a Category record
@@ -8,7 +8,7 @@ const Category = require('../db/Category');
  */
 const create = ({ title, author, userId }) => {
   return new Promise((resolve, reject) => {
-    Category.create({ title, author, userId})
+    db.Category.create({ title, author, userId})
       .then(category => {
         resolve(category);        
       });
@@ -16,11 +16,11 @@ const create = ({ title, author, userId }) => {
 };
 
 const getAll = () => {
-  return Category.findAll();
+  return db.Category.findAll();
 }
 
 const getOne = (categoryId) => {
-  return Category.findByPk(categoryId);
+  return db.Category.findByPk(categoryId);
 }
 
 module.exports = {
