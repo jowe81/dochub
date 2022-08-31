@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Document.belongsTo(models.User, {
         foreignKey: 'userId',
+      });
+      Document.hasMany(models.Constraint, {
+        foreignKey: 'constraintId',
       })
     }
   }
