@@ -1,4 +1,4 @@
-curl -X POST -H "Content-Type: application/json" -d '{"name": "Johannes", "email": "johannes@drweber.de", "plaintextPassword": "12345"}' http://localhost:3000/users/
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Joel", "email": "joel@drweber.de", "plaintextPassword": "12345"}' http://localhost:3000/users/
 
 curl -X POST -H "Content-Type: application/json" -d '{"email": "johannes@drweber.de"}' -c ./tmp/cookie.json http://localhost:3000/session/login/
 
@@ -17,3 +17,5 @@ curl -b ./tmp/cookie2.json http://localhost:3000/session/me
 curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "title": "Contingency Plan"}' -b ./tmp/cookie2.json http://localhost:3000/documents/
 
 curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "title": "VD Checklist"}' -b ./tmp/cookie2.json http://localhost:3000/documents/
+
+curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "title": "VD Checklist", "categories": [1, 2]}' -b ./tmp/cookie2.json http://localhost:3000/documents/
