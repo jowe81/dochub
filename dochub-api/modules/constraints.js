@@ -6,12 +6,15 @@ const db = require('../models');
  * @param {label, constraintTypeId} 
  * @returns a Promise to the new user
  */
-const create = ({ label, constraintTypeId }) => {
+const create = ({ label, constraintTypeName }) => {
   return new Promise((resolve, reject) => {
-    db.Constraint.create({ label, constraintTypeId })
-      .then(constraint => {
-        resolve(constraint);        
-      });
+    db.ConstraintType.find({name: constraintTypeName})
+      .then(constraintType => {
+        db.Constraint.create({ label, constraintTypeId: constraintType.id })
+        .then(constraint => {
+          resolve(constraint);        
+        });
+      })
   });
 };
 
