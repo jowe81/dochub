@@ -19,6 +19,7 @@ var usersRouter = require('./routes/users');
 var sessionRouter = require('./routes/session');
 var documentsRouter = require('./routes/documents');
 var categoriesRouter = require('./routes/categories');
+var constraintsRouter = require('./routes/constraints');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use('/users', usersRouter);
 app.use('/session', sessionRouter);
 app.use('/documents', documentsRouter);
 app.use('/categories', categoriesRouter);
+app.use('/constraints', constraintsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

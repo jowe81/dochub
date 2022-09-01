@@ -23,9 +23,9 @@ router.get('/:id', function(req, res, next) {
  * Post a new document
  */
 router.post("/", (req, res, next) => {
-  const { title, author, categories } = req.body;
+  const { title, author, constraints } = req.body;
   console.log(req.session.user);
-  documents.create({title, author, categories, userId: req.session.user.id})
+  documents.create({title, author, constraints, userId: req.session.user.id})
     .then((document) => {
       res.json(document);
     })

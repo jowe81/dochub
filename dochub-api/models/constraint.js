@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       Constraint.belongsTo(models.ConstraintType, {
         foreignKey: 'constraintTypeId',
       })
-      Constraint.hasMany(models.Document, {
-        foreignKey: 'documentId',
+      Constraint.belongsToMany(models.Document, {
+        through: 'DocumentConstraints',
       })
     }
   }

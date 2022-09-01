@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       Document.belongsTo(models.User, {
         foreignKey: 'userId',
       });
-      Document.hasMany(models.Constraint, {
-        foreignKey: 'constraintId',
+      Document.belongsToMany(models.Constraint, {
+        through: 'DocumentConstraints',
       })
     }
   }
