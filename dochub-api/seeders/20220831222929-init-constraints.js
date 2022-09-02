@@ -48,6 +48,30 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        label: 'audio',
+        constraintTypeId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        label: 'video',
+        constraintTypeId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        label: 'lighting',
+        constraintTypeId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        label: 'software',
+        constraintTypeId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
       ], {});
   },
 
