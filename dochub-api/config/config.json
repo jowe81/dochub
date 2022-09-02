@@ -1,14 +1,17 @@
 {
   "development": {
     "dialect": "sqlite",
-    "storage": "./data/dev.sqlite3"
+    "storage": "./data/dev.sqlite3",
+    "define": { "timestamps": false }
   },
   "test": {
     "dialect": "sqlite",
-    "storage": ":memory"
+    "storage": ":memory",
+    "define": { "timestamps": false }
   },
   "production": {
     "dialect": "sqlite",
-    "storage": "./data/dochub.sqlite3"
+    "storage": "./data/dochub.sqlite3",
+    "define": { "timestamps": false }
   }
 }

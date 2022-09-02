@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Keyword',
+    timestamps: true,
   });
   return Keyword;
 };

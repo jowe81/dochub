@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Constraint',
+    timestamps: false,
   });
   return Constraint;
 };

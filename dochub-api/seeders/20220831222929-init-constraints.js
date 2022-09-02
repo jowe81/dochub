@@ -15,62 +15,42 @@ module.exports = {
       {
         label: 'DiGiCo SD9',
         constraintTypeId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'Allen&Heath SQ5',
         constraintTypeId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'Ross Carbonite Ultra',
         constraintTypeId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'East Van',
         constraintTypeId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'Mount Pleasant',
         constraintTypeId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'UBC',
         constraintTypeId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'audio',
         constraintTypeId: 3,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'video',
         constraintTypeId: 3,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'lighting',
         constraintTypeId: 3,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         label: 'software',
         constraintTypeId: 3,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       ], {});
   },
