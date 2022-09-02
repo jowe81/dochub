@@ -9,7 +9,7 @@ const Navigation = props => {
         <Link role="button" className="nav-link" to="/">Home</Link>
       </Nav.Item>
       <Nav.Item>
-        <Link role="button" className="nav-link" to="/docs">Docs</Link>
+        <Link role="button" className="nav-link" to="/documents">Docs</Link>
       </Nav.Item>
       <Nav.Item>
         <Link role="button" className="nav-link" to="/about">About</Link>
