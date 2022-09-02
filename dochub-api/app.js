@@ -18,7 +18,6 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var sessionRouter = require('./routes/session');
 var documentsRouter = require('./routes/documents');
-var categoriesRouter = require('./routes/categories');
 var constraintsRouter = require('./routes/constraints');
 
 var app = express();
@@ -43,11 +42,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/session', sessionRouter);
-app.use('/documents', documentsRouter);
-app.use('/categories', categoriesRouter);
-app.use('/constraints', constraintsRouter);
+const apiPath = '/api';
+app.use(`${apiPath}/users`, usersRouter);
+app.use(`${apiPath}/session`, sessionRouter);
+app.use(`${apiPath}/documents`, documentsRouter);
+app.use(`${apiPath}/constraints`, constraintsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
