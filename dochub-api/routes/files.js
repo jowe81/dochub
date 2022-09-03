@@ -32,29 +32,11 @@ router.post("/", (req, res, next) => {
     } else if (!_files.file) {
       res.status(500).end("Error no file");
     } else {
-      var file = _files.file
-      //Move the file
-      fs = require('fs');
-      const dstDir = process.env.LIBPATH || './data/lib';
-      const dstPath = `${dstDir}/${file.originalFilename}`;
-      console.log(`Moving file from ${file.filepath} to ${dstPath}`);
-      fs.rename(file.filepath, dstPath, err => {
-        if (err) {
-          console.log("Could not move file", err)
-          res.status(500).end("Could not move file to library");
-        } else {
-          console.log("Moved file to", dstPath);
-          files.create({
-            originalName: file.originalFilename,
-            size: file.size,
-            extension: file.mimetype,
-            mimetype: file.mimetype,
-            path: dstPath,
-          }).then(file => {
-            res.send(`Success: ${dstPath}, #${file.id}`);
-          });
-        }
-      });
+      files.processUpload(_files.file)
+        .then(fileRecord => {
+          res.json(fileRecord);
+        })
+        .catch(err => res.status(500).end(`Could not process file ${err}`));
     }
   });
 
