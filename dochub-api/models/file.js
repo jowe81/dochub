@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Document extends Model {
+  class File extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,24 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Document.belongsTo(models.User, {
-        foreignKey: 'userId',
-      });
-      Document.belongsToMany(models.Constraint, {
-        through: 'DocumentConstraints',
-      });
-      Document.hasMany(models.File, {
+      File.belongsTo(models.Document, {
         foreignKey: 'documentId',
       });
     }
   }
-  Document.init({
-    title: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
+  File.init({
+    originalName: DataTypes.STRING,
+    size: DataTypes.INTEGER,
+    extension: DataTypes.STRING,
+    mimetype: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Document',
-    timestamps: true,
+    modelName: 'File',
   });
-  return Document;
+  return File;
 };
