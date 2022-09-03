@@ -20,6 +20,9 @@ module.exports = {
       mimetype: {
         type: Sequelize.STRING
       },
+      path: {
+        type: Sequelize.STRING
+      },
       documentId: {
         type: Sequelize.INTEGER
       },

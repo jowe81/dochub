@@ -15,12 +15,13 @@ require('./db/connection');
 const db = require('./models')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var sessionRouter = require('./routes/session');
-var documentsRouter = require('./routes/documents');
-var constraintsRouter = require('./routes/constraints');
+const usersRouter = require('./routes/users');
+const sessionRouter = require('./routes/session');
+const documentsRouter = require('./routes/documents');
+const constraintsRouter = require('./routes/constraints');
+const filesRouter = require('./routes/files');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,6 +48,7 @@ app.use(`${apiPath}/users`, usersRouter);
 app.use(`${apiPath}/session`, sessionRouter);
 app.use(`${apiPath}/documents`, documentsRouter);
 app.use(`${apiPath}/constraints`, constraintsRouter);
+app.use(`${apiPath}/files`, filesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

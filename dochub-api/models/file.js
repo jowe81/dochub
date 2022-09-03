@@ -20,10 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     originalName: DataTypes.STRING,
     size: DataTypes.INTEGER,
     extension: DataTypes.STRING,
-    mimetype: DataTypes.STRING
+    mimetype: DataTypes.STRING,
+    path: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'File',
+    timestamps: true,
   });
   return File;
 };

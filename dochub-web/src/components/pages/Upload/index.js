@@ -15,7 +15,7 @@ function Upload(){
 		formData.append('file', selectedFile);
     axios({
       method: "post",
-      url: "/api/documents",
+      url: "/api/files",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
