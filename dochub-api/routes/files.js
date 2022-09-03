@@ -28,9 +28,8 @@ router.post("/", (req, res, next) => {
     console.log(_files);
     if (err) {
       res.status(500).end(err);
-      console.log(err);
     } else if (!_files.file) {
-      res.status(500).end("Error no file");
+      res.status(500).end("No file submitted");
     } else {
       files.processUpload(_files.file)
         .then(fileRecord => {
@@ -39,14 +38,6 @@ router.post("/", (req, res, next) => {
         .catch(err => res.status(500).end(`Could not process file ${err}`));
     }
   });
-
-  // constraints.create({label, constraintTypeName})
-  //   .then((constraint) => {
-  //     res.json(constraint);
-  //   })
-  //   .catch(e => {
-  //     res.status(500).send(`${e}`);
-  //   });
 });
 
 module.exports = router;

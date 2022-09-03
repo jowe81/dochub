@@ -2,28 +2,23 @@ const helpers = require("../modules/helpers");
 const db = require('../models');
 
 /**
- * Create a File record
- * @param {label, constraintTypeId} 
- * @returns a Promise to the new user
+ * Move file 
+ * @param {*} tempPath 
+ * @param {*} name 
+ * @param {*} fileRecordId 
+ * @returns 
  */
-
 const move = (tempPath, name, fileRecordId) => {
-  console.log("Moving...", fileRecordId);
   return new Promise((resolve, reject) => {
     const fs = require('fs');
-    const dstName = `${Date.now()}-${fileRecordId}-${name}`;
-  
+    const dstName = `${Date.now()}-${fileRecordId}-${name}`;  
     const dstDir = process.env.LIBPATH || './data/lib';
-    const dstPath = `${dstDir}/${dstName}`;
-  
-    console.log(`Moving file from ${tempPath} to ${dstPath}`);
+    const dstPath = `${dstDir}/${dstName}`;  
     fs.rename(tempPath, dstPath, err => {
       if (err) {
-        console.log("Could not move file", err)
         res.status(500).end("Could not move file to library");
         reject(err);
       } else {
-        console.log("Moved file to", dstPath);
         const result = {
           dstPath,
           dstName,
@@ -35,8 +30,12 @@ const move = (tempPath, name, fileRecordId) => {
   });
 }
 
+/**
+ * Create a file record
+ * @param { name, extension, size, mimetype, path }  
+ * @returns a promise to the new file record
+ */
 const create = ({ name, extension, size, mimetype, path }) => {
-  console.log("Creating record...");
   return new Promise((resolve, reject) => {
     db.File.create({ name, extension, size, mimetype, path })
       .then(file => {
@@ -45,8 +44,12 @@ const create = ({ name, extension, size, mimetype, path }) => {
   });
 };
 
+/**
+ * Move file to library and create a database record
+ * @param {*} uploadMeta 
+ * @returns the file record
+ */
 const processUpload = (uploadMeta) => {
-  console.log("Processing uploade...");
   return new Promise((resolve, reject) => {
     create({
       originalName: uploadMeta.originalFilename,
@@ -55,18 +58,14 @@ const processUpload = (uploadMeta) => {
       mimetype: uploadMeta.mimetype,
       path: uploadMeta.filepath,
     }).then(file => {
-      console.log(`file: `, file);
       return move(uploadMeta.filepath, uploadMeta.originalFilename, file.id)
     }).then(updatedFileInfo => {
       return db.File.update({
         path: updatedFileInfo.dstPath
       }, { where: { id: updatedFileInfo.fileRecordId }})
     }).then(resolve)
-    .catch(err => {
-      reject(err);
-    });  
+    .catch(reject);  
   });
-
 }
 
 const getAll = () => {
