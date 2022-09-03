@@ -12,8 +12,15 @@ function Upload(){
 
 	const handleSubmission = () => {
     const formData = new FormData();
-		formData.append('File', selectedFile);
-    axios.post(`/api/documents`);
+		formData.append('file', selectedFile);
+    axios({
+      method: "post",
+      url: "/api/documents",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then(res => {
+      console.log(res);
+    });
 	};
 
 	return(

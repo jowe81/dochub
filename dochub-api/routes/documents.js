@@ -1,3 +1,4 @@
+const e = require('express');
 var express = require('express');
 const constraint = require('../models/constraint');
 var router = express.Router();
@@ -32,6 +33,39 @@ router.get('/:id', function(req, res, next) {
  */
 router.post("/", (req, res, next) => {
   const { title, author, constraints } = req.body;
+  // Somewhere at the start of your file
+  const IncomingForm = require('formidable').IncomingForm
+  const form = new IncomingForm()
+  form.uploadDir = 'uploads'
+  form.parse(req, function(err, fields, files) {
+    console.log('files:');
+    console.log(files);
+    if (err) {
+      res.status(500).end("Error uploading");
+    } else if (!files.file) {
+      res.status(500).end("Error no file");
+    } else {
+      var file = files.file
+      //Move the file
+      fs = require('fs');
+      const dstDir = process.env.LIBPATH || './data/lib';
+      const dstPath = `${dstDir}/${file.originalFilename}`;
+      console.log(`Moving file from ${file.filepath} to ${dstPath}`);
+      fs.rename(file.filepath, dstPath, err => {
+        if (err) {
+          console.log("Could not move file", err)
+          res.status(500).end("Could not move file to library");
+        } else {
+          console.log("Moved file to", dstPath)
+          res.send(`Success: ${dstPath}, ${file.originalFilename}, ${file.size}`);
+        }
+      });
+    }
+  })
+
+
+  /*
+
   console.log(req.session.user);
   documents.create({title, author, constraints, userId: req.session.user.id})
     .then((document) => {
@@ -40,6 +74,7 @@ router.post("/", (req, res, next) => {
     .catch(e => {
       res.status(500).send(`${e}`);
     });
+    */
 });
 
 module.exports = router;
