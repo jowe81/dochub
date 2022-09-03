@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import About from './components/pages/About';
 import Login from './components/pages/Login';
 import Documents from './components/pages/Documents';
+import Upload from './components/pages/Upload';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="documents" element={<Documents />} />
+          <Route path="upload" element={<Upload />} />
         </Route>
       </Routes>
     </BrowserRouter>
