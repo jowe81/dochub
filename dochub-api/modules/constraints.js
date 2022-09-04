@@ -8,21 +8,32 @@ const db = require('../models');
  */
 const create = ({ label, constraintTypeName }) => {
   return new Promise((resolve, reject) => {
-    console.log(`looking for ${constraintTypeName}`);
     db.ConstraintType.findOne({ where: { name: constraintTypeName}})
       .then(constraintType => {
-        console.log('found constraint type', constraintType.name);
         db.Constraint.create({ label, constraintTypeId: constraintType.id })
         .then(constraint => {
-          console.log(`created and returned`, constraint);
           resolve(constraint);        
         });
       })
   });
 };
 
-const getAll = () => {
-  return db.Constraint.findAll();
+/**
+ * Return constraints by type. Where can contain id or name.
+ * @param {*} where 
+ * @returns 
+ */
+const getByType = (where) => {
+  return db.Constraint.findAll({ 
+    include: { 
+      model: db.ConstraintType, 
+      where,
+    }
+  })
+};
+
+const getAll = (options) => {
+  return db.Constraint.findAll(options);
 }
 
 const getOne = (id) => {
@@ -31,6 +42,7 @@ const getOne = (id) => {
 
 module.exports = {
   create,
+  getByType,
   getAll,
   getOne,
 };

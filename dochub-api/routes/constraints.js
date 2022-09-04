@@ -3,8 +3,16 @@ var router = express.Router();
 
 const constraints = require('../modules/constraints');
 
-router.get('/', function(req, res, next) {
-  constraints.getAll().then(data => {
+router.get('/byType', function(req, res, next) {
+  const options = {};
+  const id = req.query.id;
+  const name = req.query.name;
+  if (id) {
+    options.id = id;
+  } else if (name) {
+    options.name = name;
+  }
+  constraints.getByType(options).then(data => {
     console.log(`Constraints: `, data);
     res.json(data);
   })
