@@ -63,7 +63,8 @@ const processUpload = (uploadMeta) => {
       //Sadly, sequelize.update does not return the updated record -> have to fetch it
       return new Promise((resolve, reject) => {
         db.File.update({
-          path: updatedFileInfo.dstPath
+          path: updatedFileInfo.dstPath,
+          originalName: uploadMeta.originalFilename,
         }, { 
           where: { id: updatedFileInfo.fileRecordId },
         }).then(() => getOne(updatedFileInfo.fileRecordId))
