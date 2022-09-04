@@ -12,12 +12,15 @@ const create = ({ title, author, constraints, userId }) => {
   return new Promise((resolve, reject) => {
     db.Document.create({ title, author, userId})
       .then(document => {
-        document.addConstraints(constraints)
+        if (constraints) {
+          document.addConstraints(constraints)
           .then(document => {
             console.log(`added constraints`, constraints);
             resolve(document);        
           });
-       //resolve(document);
+        } else {
+          resolve(document);
+        }
       });
   });
 };
