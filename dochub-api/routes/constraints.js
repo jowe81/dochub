@@ -3,6 +3,7 @@ var router = express.Router();
 
 const constraints = require('../modules/constraints');
 
+//Get constraints by type; specify either type id or type name
 router.get('/byType', function(req, res, next) {
   const options = {};
   const id = req.query.id;
