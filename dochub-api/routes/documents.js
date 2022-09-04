@@ -33,18 +33,14 @@ router.get('/:id', function(req, res, next) {
  * Post a new document
  */
 router.post("/", (req, res, next) => {
-  const { title, author, constraints } = req.body;
-  /*
-
-  console.log(req.session.user);
-  documents.create({title, author, constraints, userId: req.session.user.id})
+  const { title } = req.body;
+  documents.create({title, userId: req.session.user?.id || 1})
     .then((document) => {
       res.json(document);
     })
     .catch(e => {
       res.status(500).send(`${e}`);
     });
-    */
 });
 
 module.exports = router;
