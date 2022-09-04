@@ -57,13 +57,22 @@ const processUpload = (uploadMeta) => {
       extension: uploadMeta.mimetype.split('/')[1],
       mimetype: uploadMeta.mimetype,
       path: uploadMeta.filepath,
-    }).then(file => {
-      return move(uploadMeta.filepath, uploadMeta.originalFilename, file.id)
-    }).then(updatedFileInfo => {
-      return db.File.update({
-        path: updatedFileInfo.dstPath
-      }, { where: { id: updatedFileInfo.fileRecordId }})
-    }).then(resolve)
+    })
+    .then(file => move(uploadMeta.filepath, uploadMeta.originalFilename, file.id))
+    .then(updatedFileInfo => {
+      //Sadly, sequelize.update does not return the updated record -> have to fetch it
+      return new Promise((resolve, reject) => {
+        db.File.update({
+          path: updatedFileInfo.dstPath
+        }, { 
+          where: { id: updatedFileInfo.fileRecordId },
+        }).then(() => getOne(updatedFileInfo.fileRecordId))
+        .then(updatedFileRecord => resolve(updatedFileRecord))  
+      })
+    })
+    .then((updatedFileRecord) => {
+      resolve(updatedFileRecord);
+    })
     .catch(reject);  
   });
 }
