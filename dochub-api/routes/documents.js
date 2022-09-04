@@ -33,8 +33,8 @@ router.get('/:id', function(req, res, next) {
  * Post a new document
  */
 router.post("/", (req, res, next) => {
-  const { title } = req.body;
-  documents.create({title, userId: req.session.user?.id || 1})
+  const { title, constraints } = req.body;
+  documents.create({title, constraints, userId: req.session.user?.id || 1})
     .then((document) => {
       res.json(document);
     })

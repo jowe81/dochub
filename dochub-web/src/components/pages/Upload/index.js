@@ -11,17 +11,35 @@ function Upload(){
   const [constraints, setConstraints] = useState({}); 
   const [document, setDocument] = useState({});
 
-  const handleSubmit = () => {
-    const keywordElements = window.document.getElementsByClassName('option-keywords');
-    keywordElements.forEach(element => {
-      console.log("foreach");
-      console.log(element.firstElementChild.id);
-    })
-    const selectedKeywordIds = keywordElements.map(element => {
-      return element.firstElementChild.id
-    })
-    console.log(selectedKeywordIds);
+  const getSelectedConstraintIds = constraintTypeName => {
+    const elements = window.document.getElementsByClassName(`option-${constraintTypeName}`);
+    const pnames = Object.getOwnPropertyNames(elements);
+    const result = [];
+    pnames.forEach(pname => {
+      const constraintId = Number(elements[pname].firstElementChild.id.split('.')[1]);
+      const checked = elements[pname].firstElementChild.checked;
+      if (checked) {
+        result.push(constraintId)
+      }
+    });
+    return result;
+  }
 
+  const handleSubmit = () => {
+    console.log(getSelectedConstraintIds('keywords'));
+    const newDocument = {
+      title: window.document.getElementById('form-document-title').value,
+      constraints: [ 
+        ...getSelectedConstraintIds('keywords'), 
+        ...getSelectedConstraintIds('locations'),
+        ...getSelectedConstraintIds('categories'),
+      ]
+    }
+    axios.post('/api/documents', newDocument)
+      .then(documentRecord => {
+        console.log("Returned record", documentRecord);        
+      })
+    console.log("New record:", newDocument);
   }
 
 	const handleFileSubmission = (event) => {
@@ -102,6 +120,7 @@ function Upload(){
               type="text" 
               value={document.title} 
               onBlur={handleTitle} 
+              id='form-document-title'
             />
           </Form.Group>
 
