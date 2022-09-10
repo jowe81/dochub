@@ -7,12 +7,10 @@ const constraintTypes = require('./constraintTypes');
 const updateConstraint = ({documentId, constraintId, checked}) => {
   return new Promise((resolve, reject) => {
     const operationType = checked ? "addConstraint" : "removeConstraint";
-    db.Document.findByPk(documentId)
-      .then(document=> {
-        document[operationType](constraintId).then(res => {
-          resolve();
-        })
-      })
+    db.Document
+      .findByPk(documentId)
+      .then(document => document[operationType](constraintId))
+      .then(resolve)
   });
 };
 
@@ -43,7 +41,7 @@ const getAll = () => {
 }
 
 const getOne = (documentId) => {
-  return db.Document.findByPk(documentId, { include:[db.Constraint, db.User]});
+  return db.Document.findByPk(documentId, { include:[db.Constraint, db.User, db.File]});
 };
 
 const getByConstraint = (constraintTypeNames, constraintIds) => {
