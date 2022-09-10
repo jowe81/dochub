@@ -3,6 +3,19 @@ const db = require('../models');
 const { Op } = require("sequelize");
 const constraintTypes = require('./constraintTypes');
 
+//Set or remove a single constraint
+const updateConstraint = ({documentId, constraintId, checked}) => {
+  return new Promise((resolve, reject) => {
+    const operationType = checked ? "addConstraint" : "removeConstraint";
+    db.Document.findByPk(documentId)
+      .then(document=> {
+        document[operationType](constraintId).then(res => {
+          resolve();
+        })
+      })
+  });
+};
+
 /**
  * Create a document record
  * @param {name, email, plaintextPassword} 
@@ -26,7 +39,7 @@ const create = ({ title, author, constraints, userId }) => {
 };
 
 const getAll = () => {
-  return db.Document.findAll({ include: [db.User, db.Constraint] });
+  return db.Document.findAll({ include: [db.User, db.Constraint, db.File] });
 }
 
 const getOne = (documentId) => {
@@ -63,6 +76,7 @@ module.exports = {
   create,
   getAll,
   getByConstraint,
+  updateConstraint,
   findAll,
   getOne,
 };

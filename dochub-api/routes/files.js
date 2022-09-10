@@ -20,6 +20,7 @@ router.get('/:id', function(req, res, next) {
  * Post a new file
  */
 router.post("/", (req, res, next) => {
+  const documentId = req.query.documentId;
   const IncomingForm = require('formidable').IncomingForm
   const form = new IncomingForm()
   form.uploadDir = process.env.UPLOADPATH || './data/upload';
@@ -31,7 +32,7 @@ router.post("/", (req, res, next) => {
     } else if (!_files.file) {
       res.status(500).end("No file submitted");
     } else {
-      files.processUpload(_files.file)
+      files.processUpload(_files.file, documentId)
         .then(fileRecord => {
           res.json(fileRecord);
         })

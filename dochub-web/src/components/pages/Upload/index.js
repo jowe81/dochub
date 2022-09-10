@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import axios from 'axios';
-import { resolvePath } from 'react-router-dom';
 
 import './UploadForm.scss';
 
@@ -11,6 +10,7 @@ function Upload(){
   const [constraints, setConstraints] = useState({}); 
   const [document, setDocument] = useState({});
 
+  //Collect ids from selected constraints for submission
   const getSelectedConstraintIds = constraintTypeName => {
     const elements = window.document.getElementsByClassName(`option-${constraintTypeName}`);
     const pnames = Object.getOwnPropertyNames(elements);
@@ -37,19 +37,32 @@ function Upload(){
     }
     axios.post('/api/documents', newDocument)
       .then(documentRecord => {
+        const constraints = documentRecord.constraints ? [...documentRecord.constraints] : undefined; 
+        setDocument({
+          ...documentRecord,
+          constraints,
+        })
         console.log("Returned record", documentRecord);        
+        getSelectedFile();
       })
     console.log("New record:", newDocument);
   }
 
+  const getSelectedFile = () => {
+    const fileElement = window.document.getElementById('form-file');
+    console.log("sel file name", fileElement.value);
+  }
+
 	const handleFileSubmission = (event) => {
+    //return false;
     const formData = new FormData();
     console.log(`Uploading file for document #${document.id}, ${document.title}`, event.target.files.length);
+    console.log(`name is ${event.target.files[0]}, ${typeof event.target.files[0]}`)
 		formData.append('file', event.target.files[0]);
     axios({
       method: "post",
-      url: "/api/files",
-      data: { ...formData, id: document.id },
+      url: `/api/files?documentId=${document.id}`,
+      data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
       console.log(res);
@@ -70,6 +83,18 @@ function Upload(){
       });
     }
     console.log(event.target.value);
+  }
+
+  const handleCheckboxClick = (event) => {
+    console.log(event.target.checked, event.target.getAttribute('data-constraint-id'));
+    const constraintId = event.target.getAttribute('data-constraint-id');
+    const checked = event.target.checked;
+    axios.post(`/api/documents/${document.id}/update-constraint/`, {
+      constraintId,
+      checked
+    }).then(res => {
+      console.log(res);
+    });
   }
 
   const retrieveConstraints = (name) => {
@@ -99,53 +124,60 @@ function Upload(){
           <Form.Check 
             type='checkbox'
             id={`option-${constraintTypeName}.${item.id}`}
+            data-constraint-id={item.id}
             label={`${item.label}`}
             className={`option-${constraintTypeName}`}
+            onClick={handleCheckboxClick}
           />
         </div>  
       );
     });
   };
 
-  const keywordsMarkup = getConstraintsMarkup('keywords')
-  console.log(keywordsMarkup);
+  const restOfFormMarkup = (
+    <div>
+      <Form.Group className="mb-3">
+        <Form.Label>Select category(ies):</Form.Label>
+        {getConstraintsMarkup('categories')}
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Select location(s):</Form.Label>
+        {getConstraintsMarkup('locations')}
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Select keyword(s):</Form.Label>
+        {getConstraintsMarkup('keywords')}
+      </Form.Group>
+      <div>Files: </div>
+      <Form.Group className="mb-3">
+        <Form.Label>Select file to upload</Form.Label>
+        <Form.Control 
+          type="file"
+          name="file"
+          onChange={handleFileSubmission}
+          id='form-file'
+        />
+      </Form.Group>
+      <Button id="submit" onClick={handleSubmit}>Generate Document Record</Button>
+    </div>
+  );
+
+
+
 	return(
     <div>
       <div className='NewDocumentForm'>
         <Form className='UploadForm'>
 
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Document Title</Form.Label>
+          <Form.Group className="mb-3">
+            <Form.Label>Enter New Document Title</Form.Label>
             <Form.Control 
               type="text" 
-              value={document.title} 
               onBlur={handleTitle} 
               id='form-document-title'
             />
           </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formCategories">
-            <Form.Label>Select category(ies):</Form.Label>
-            {getConstraintsMarkup('categories')}
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formLocations">
-            <Form.Label>Select location(s):</Form.Label>
-            {getConstraintsMarkup('locations')}
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formKeywords">
-            <Form.Label>Select keyword(s):</Form.Label>
-            {getConstraintsMarkup('keywords')}
-          </Form.Group>
-          <div>Files: </div>
-          <Form.Group className="mb-3" controlId="formFiles">
-            <Form.Label>Select file to upload</Form.Label>
-            <Form.Control 
-              type="file"
-              name="file"
-              onChange={handleFileSubmission}
-            />
-          </Form.Group>
-          <Button id="submit" onClick={handleSubmit}>Generate Document Record</Button>
+          { document.title && restOfFormMarkup}
         </Form>
       </div>
 	  </div>

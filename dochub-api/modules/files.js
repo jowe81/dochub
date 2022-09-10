@@ -49,7 +49,7 @@ const create = ({ name, extension, size, mimetype, path }) => {
  * @param {*} uploadMeta 
  * @returns the file record
  */
-const processUpload = (uploadMeta) => {
+const processUpload = (uploadMeta, documentId) => {
   return new Promise((resolve, reject) => {
     create({
       originalName: uploadMeta.originalFilename,
@@ -57,6 +57,7 @@ const processUpload = (uploadMeta) => {
       extension: uploadMeta.mimetype.split('/')[1],
       mimetype: uploadMeta.mimetype,
       path: uploadMeta.filepath,
+      documentId,
     })
     .then(file => move(uploadMeta.filepath, uploadMeta.originalFilename, file.id))
     .then(updatedFileInfo => {
@@ -65,6 +66,7 @@ const processUpload = (uploadMeta) => {
         db.File.update({
           path: updatedFileInfo.dstPath,
           originalName: uploadMeta.originalFilename,
+          documentId,
         }, { 
           where: { id: updatedFileInfo.fileRecordId },
         }).then(() => getOne(updatedFileInfo.fileRecordId))
@@ -73,6 +75,7 @@ const processUpload = (uploadMeta) => {
     })
     .then((updatedFileRecord) => {
       resolve(updatedFileRecord);
+      console.log("Doc ID", documentId);
     })
     .catch(reject);  
   });

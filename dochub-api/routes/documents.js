@@ -29,6 +29,16 @@ router.get('/:id', function(req, res, next) {
   })
 });
 
+
+router.post("/:id/update-constraint/", function(req, res){
+  const documentId = req.params.id;
+  const { constraintId, checked } = req.body;
+  documents.updateConstraint({documentId, constraintId, checked})
+    .then(result => {
+      res.json('success');
+    });
+});
+
 /**
  * Post a new document
  */
