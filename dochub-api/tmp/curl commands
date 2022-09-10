@@ -18,4 +18,12 @@ curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "
 
 curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "title": "VD Checklist"}' -b ./tmp/cookie2.json http://localhost:3000/documents/
 
-curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "title": "VD Checklist", "categories": [1, 2]}' -b ./tmp/cookie2.json http://localhost:3000/documents/
+curl -X POST -H "Content-Type: application/json" -d '{"author": "Jessica Lee", "title": "VD Checklist", "constraints": [11, 12]}' -b ./tmp/cookie2.json http://localhost:3000/documents/
+
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"label": "Mount Pleasant", "constraintTypeName": "Location"}' -b ./tmp/cookie2.json http://localhost:3000/constraints/
+
+curl -X POST -H "Content-Type: application/json" -d '{"label": "sd9", "constraintTypeName": "Keyword"}' -b ./tmp/cookie2.json http://localhost:3000/constraints/
+
+curl -X POST -H "Content-Type: application/json" -d '{"label": "OrangeBox", "constraintTypeName": "Keyword"}' -b ./tmp/cookie2.json http://localhost:3000/constraints/
