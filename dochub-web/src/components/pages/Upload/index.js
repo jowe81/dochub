@@ -31,7 +31,6 @@ function Upload(){
   }
 
 	const handleFileSubmission = (event) => {
-    //return false;
     const formData = new FormData();
     console.log(`Uploading file for document #${document.id}, ${document.title}`, event.target.files.length);
     console.log(`name is ${event.target.files[0]}, ${typeof event.target.files[0]}`)
@@ -42,7 +41,7 @@ function Upload(){
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
-      console.log(res);
+      event.target.value = null;
       refreshDocumentData();
     });
 	};
