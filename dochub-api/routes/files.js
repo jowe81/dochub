@@ -41,4 +41,10 @@ router.post("/", (req, res, next) => {
   });
 });
 
+router.delete("/:id", (req, res) => {
+  files
+    .remove(req.params.id)
+    .then(res.end("file deleted"));
+});
+
 module.exports = router;

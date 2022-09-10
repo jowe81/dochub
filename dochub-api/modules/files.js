@@ -1,5 +1,6 @@
 const helpers = require("../modules/helpers");
 const db = require('../models');
+const fs = require('fs');
 
 /**
  * Move file 
@@ -10,7 +11,6 @@ const db = require('../models');
  */
 const move = (tempPath, name, fileRecordId) => {
   return new Promise((resolve, reject) => {
-    const fs = require('fs');
     const dstName = `${Date.now()}-${fileRecordId}-${name}`;  
     const dstDir = process.env.LIBPATH || './data/lib';
     const dstPath = `${dstDir}/${dstName}`;  
@@ -89,8 +89,23 @@ const getOne = (id) => {
   return db.File.findByPk(id);
 }
 
+const remove = id => {
+  return new Promise((resolve, reject) => {
+    getOne(id)
+      .then(file => {
+        return new Promise((resolve, reject) => {
+          fs.unlink(file.path, resolve);
+        })
+      })
+      .then(() => db.File.destroy({ where: { id }}))
+      .then(resolve)
+      .catch(reject);
+  })
+}
+
 module.exports = {
   processUpload,
   getAll,
   getOne,
+  remove,
 };

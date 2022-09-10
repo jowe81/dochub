@@ -10,47 +10,24 @@ function Upload(){
   const [constraints, setConstraints] = useState({}); 
   const [document, setDocument] = useState({});
 
-  //Collect ids from selected constraints for submission
-  const getSelectedConstraintIds = constraintTypeName => {
-    const elements = window.document.getElementsByClassName(`option-${constraintTypeName}`);
-    const pnames = Object.getOwnPropertyNames(elements);
-    const result = [];
-    pnames.forEach(pname => {
-      const constraintId = Number(elements[pname].firstElementChild.id.split('.')[1]);
-      const checked = elements[pname].firstElementChild.checked;
-      if (checked) {
-        result.push(constraintId)
-      }
+  //Updated state for nested object
+  const _setDocument = documentRecord => {
+    setDocument({
+      ...documentRecord,
+      constraints: [...documentRecord.Constraints],
+      files: [...documentRecord.Files],
+      user: {...documentRecord.User}
     });
-    return result;
   }
 
-  const handleSubmit = () => {
-    console.log(getSelectedConstraintIds('keywords'));
-    const newDocument = {
-      title: window.document.getElementById('form-document-title').value,
-      constraints: [ 
-        ...getSelectedConstraintIds('keywords'), 
-        ...getSelectedConstraintIds('locations'),
-        ...getSelectedConstraintIds('categories'),
-      ]
-    }
-    axios.post('/api/documents', newDocument)
-      .then(documentRecord => {
-        const constraints = documentRecord.constraints ? [...documentRecord.constraints] : undefined; 
-        setDocument({
-          ...documentRecord,
-          constraints,
-        })
-        console.log("Returned record", documentRecord);        
-        getSelectedFile();
+  const refreshDocumentData = () => {
+    axios.get(`/api/documents/${document.id}`)
+      .then(res => {
+        const documentRecord = res.data;
+        console.log(`Refreshed doc record: `, documentRecord);
+        console.log(`constraints:`, documentRecord.Constraints);
+        _setDocument(documentRecord);
       })
-    console.log("New record:", newDocument);
-  }
-
-  const getSelectedFile = () => {
-    const fileElement = window.document.getElementById('form-file');
-    console.log("sel file name", fileElement.value);
   }
 
 	const handleFileSubmission = (event) => {
@@ -66,23 +43,27 @@ function Upload(){
       headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
       console.log(res);
+      refreshDocumentData();
     });
 	};
+
+  const removeFile = (event) => {
+    const fileId = event.target.getAttribute('data-file-id');
+    axios
+      .delete(`/api/files/${fileId}`)
+      .then(refreshDocumentData);
+  }
 
   const handleTitle = (event) => {
     if (!document.id && event.target.value !== '') {
       //Haven't created a document yet
-      console.log(`Posting`);
       axios.post('/api/documents', {
         title: event.target.value,
       }).then(res => {
         const documentRecord = res.data;
-        console.log(`Post returned`, documentRecord);
         setDocument({ ...documentRecord });
-        console.log(documentRecord.id);
       });
     }
-    console.log(event.target.value);
   }
 
   const handleCheckboxClick = (event) => {
@@ -134,6 +115,13 @@ function Upload(){
     });
   };
 
+  const filesMarkup = document.Files?.map(file => (
+    <div className="fileItem" key={file.id}>
+      {file.originalName}
+      <div className="removeBtn" onClick={removeFile} data-file-id={file.id}>remove</div>
+    </div>
+  ));
+
   const restOfFormMarkup = (
     <div>
       <Form.Group className="mb-3">
@@ -148,7 +136,12 @@ function Upload(){
         <Form.Label>Select keyword(s):</Form.Label>
         {getConstraintsMarkup('keywords')}
       </Form.Group>
-      <div>Files: </div>
+      <div>
+        Files: 
+        <div>
+          {filesMarkup}
+        </div>
+      </div>
       <Form.Group className="mb-3">
         <Form.Label>Select file to upload</Form.Label>
         <Form.Control 
@@ -158,7 +151,6 @@ function Upload(){
           id='form-file'
         />
       </Form.Group>
-      <Button id="submit" onClick={handleSubmit}>Generate Document Record</Button>
     </div>
   );
 
@@ -177,7 +169,7 @@ function Upload(){
               id='form-document-title'
             />
           </Form.Group>
-          { document.title && restOfFormMarkup}
+          { document.title && restOfFormMarkup }
         </Form>
       </div>
 	  </div>
