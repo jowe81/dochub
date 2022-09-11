@@ -117,7 +117,7 @@ function Upload(){
   const filesMarkup = document.Files?.map(file => (
     <div className="fileItem" key={file.id}>
       {file.originalName}
-      <div className="removeBtn" onClick={removeFile} data-file-id={file.id}>remove</div>
+      <Button className="removeBtn" size="sm" variant="danger" onClick={removeFile} data-file-id={file.id}>remove</Button>
     </div>
   ));
 
