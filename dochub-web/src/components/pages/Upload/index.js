@@ -14,20 +14,22 @@ function Upload(){
   const _setDocument = documentRecord => {
     setDocument({
       ...documentRecord,
-      constraints: [...documentRecord.Constraints],
-      files: [...documentRecord.Files],
+      constraints: [...documentRecord.Constraints || []],
+      files: [...documentRecord.Files || []],
       user: {...documentRecord.User}
     });
   }
 
   const refreshDocumentData = () => {
-    axios.get(`/api/documents/${document.id}`)
-      .then(res => {
-        const documentRecord = res.data;
-        console.log(`Refreshed doc record: `, documentRecord);
-        console.log(`constraints:`, documentRecord.Constraints);
-        _setDocument(documentRecord);
-      })
+    if (document.id) {
+      axios.get(`/api/documents/${document.id}`)
+        .then(res => {
+          const documentRecord = res.data;
+          console.log(`Refreshed doc record: `, documentRecord);
+          console.log(`constraints:`, documentRecord.Constraints);
+          _setDocument(documentRecord);
+        });
+    }
   }
 
 	const handleFileSubmission = (event) => {
@@ -40,7 +42,7 @@ function Upload(){
       url: `/api/files?documentId=${document.id}`,
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
-    }).then(res => {
+    }).then(() => {
       event.target.value = null;
       refreshDocumentData();
     });
@@ -54,16 +56,29 @@ function Upload(){
   }
 
   const handleTitle = (event) => {
-    if (!document.id && event.target.value !== '') {
-      //Haven't created a document yet
-      axios.post('/api/documents', {
-        title: event.target.value,
-      }).then(res => {
-        const documentRecord = res.data;
-        setDocument({ ...documentRecord });
-      });
+    const title = event.target.value;
+    if (title) {
+      if (!document.id) {
+        //Haven't created a document yet
+        axios.post('/api/documents', {
+          title: event.target.value,
+        }).then(res => {
+          const documentRecord = res.data;
+          _setDocument(documentRecord);
+          console.log(`Document ${documentRecord.id} created`);
+        });
+      } else {
+        //Update title
+        axios.put(`/api/documents/${document.id}`, { title, id:document.id })
+          .then(res => {
+            refreshDocumentData();
+            console.log('Title updated');
+          });
+      }  
     }
   }
+
+
 
   const handleCheckboxClick = (event) => {
     console.log(event.target.checked, event.target.getAttribute('data-constraint-id'));

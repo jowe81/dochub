@@ -36,6 +36,16 @@ const create = ({ title, author, constraints, userId }) => {
   });
 };
 
+const update = ({ id, title, author }) => { 
+  return new Promise((resolve, reject) => {
+    db.Document.update({ title }, { where: { id }})
+    .then(res => {
+      resolve(`new title ${title}, id ${id}`);
+    }).catch(reject);
+  })
+};
+  
+
 const getAll = () => {
   return db.Document.findAll({ include: [db.User, db.Constraint, db.File] });
 }
@@ -72,6 +82,7 @@ const findAll = options => db.Document.findAll;
 
 module.exports = {
   create,
+  update,
   getAll,
   getByConstraint,
   updateConstraint,

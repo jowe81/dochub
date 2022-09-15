@@ -53,4 +53,15 @@ router.post("/", (req, res, next) => {
     });
 });
 
+router.put("/:id", (req, res, next) => {
+  const { id, title, author } = req.body;
+  documents.update({id, title, author})
+    .then((data) => {
+      res.json(`success: ${data}`);
+    })
+    .catch(e => {
+      res.status(500).send(e);
+    });
+});
+
 module.exports = router;
