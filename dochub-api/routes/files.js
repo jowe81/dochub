@@ -16,6 +16,21 @@ router.get('/:id', function(req, res, next) {
   })
 });
 
+router.get('/:id/download', function(req, res, next) {
+  files.getOne(req.params.id).then(file => {
+    res.download(file.path, file.originalName, function (err) {
+      if (err) {
+        // Handle error, but keep in mind the response may be partially-sent
+        // so check res.headersSent
+        res.err(err);
+      } else {
+        // decrement a download credit, etc.
+        
+      }
+    })  
+  })
+});
+
 /**
  * Post a new file
  */
