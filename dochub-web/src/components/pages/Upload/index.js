@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
+import FileItem from '../../FileItem';
 
 import axios from 'axios';
 
@@ -48,13 +49,6 @@ function Upload(){
     });
 	};
 
-  const removeFile = (event) => {
-    const fileId = event.target.getAttribute('data-file-id');
-    axios
-      .delete(`/api/files/${fileId}`)
-      .then(refreshDocumentData);
-  }
-
   const handleTitle = (event) => {
     const title = event.target.value;
     if (title) {
@@ -77,8 +71,6 @@ function Upload(){
       }  
     }
   }
-
-
 
   const handleCheckboxClick = (event) => {
     console.log(event.target.checked, event.target.getAttribute('data-constraint-id'));
@@ -130,10 +122,7 @@ function Upload(){
   };
 
   const filesMarkup = document.Files?.map(file => (
-    <div className="fileItem" key={file.id}>
-      {file.originalName}
-      <Button className="removeBtn" size="sm" variant="danger" onClick={removeFile} data-file-id={file.id}>remove</Button>
-    </div>
+    <FileItem key={file.id} file={file} btns={{remove: true}}/>
   ));
 
   const restOfFormMarkup = (

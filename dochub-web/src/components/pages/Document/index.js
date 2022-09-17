@@ -38,7 +38,7 @@ export default function Document() {
         <span>Updated: {document.updatedAt}</span>
       </div>
       <div>
-        {document?.files?.map(file => <FileItem key={file.id} file={file}/>)}
+        {document?.files?.map(file => <FileItem key={file.id} file={file} btns={{download: true, remove: true}}/>)}
       </div>
     </>
   );
