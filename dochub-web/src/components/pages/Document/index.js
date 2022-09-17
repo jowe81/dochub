@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import FileItem from "../../FileItem";
+import DocumentMeta from "./DocumentMeta";
 
 export default function Document() {
 
@@ -32,11 +33,8 @@ export default function Document() {
 
   return (
     <>
-      <h2>{document.title}</h2>
-      <div>
-        <span>Updated: {document.updatedAt}</span>
-      </div>
-      <div>
+      <DocumentMeta document={document} />
+      <div className="filesContainer">
         {document?.files?.map(file => <FileItem key={file.id} file={file} btns={{download: true}}/>)}
       </div>
     </>
