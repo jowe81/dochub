@@ -59,7 +59,8 @@ router.post("/", (req, res, next) => {
 router.delete("/:id", (req, res) => {
   files
     .remove(req.params.id)
-    .then(res.end("file deleted"));
+    .then(() => res.end("file deleted"))
+    .catch(err => res.status(500).end(`Could not delete file: ${err}`));
 });
 
 module.exports = router;
