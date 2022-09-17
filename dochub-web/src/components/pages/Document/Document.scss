@@ -1,6 +1,17 @@
 .metaContainer {
-  padding:10px;
+  padding:5px;
+  margin:5px;
+}
 
+.detailsContainer {
+  border:1px solid rgb(202, 183, 183);
+  background-color: rgb(255, 248, 239);
+  border-radius:5px;
+  padding:5px;
+
+  div {
+    padding:5px;
+  }
 }
 
 .filesContainer {
