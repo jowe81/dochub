@@ -1,6 +1,6 @@
 const helpers = require("../modules/helpers");
 const db = require('../models');
-const fs = require('fs');
+const fs = require('fs/promises');
 
 /**
  * Move file 
@@ -14,19 +14,17 @@ const move = (tempPath, name, fileRecordId) => {
     const dstName = `${Date.now()}-${fileRecordId}-${name}`;  
     const dstDir = process.env.LIBPATH || './data/lib';
     const dstPath = `${dstDir}/${dstName}`;  
-    fs.rename(tempPath, dstPath, err => {
-      if (err) {
-        res.status(500).end("Could not move file to library");
-        reject(err);
-      } else {
+    fs.rename(tempPath, dstPath)
+      .then(() => {
         const result = {
           dstPath,
           dstName,
           fileRecordId,
         }
-        resolve(result);
-      }
-    });
+        return (result);
+      })
+      .then(resolve)
+      .catch(reject);
   });
 }
 
@@ -75,7 +73,6 @@ const processUpload = (uploadMeta, documentId) => {
     })
     .then((updatedFileRecord) => {
       resolve(updatedFileRecord);
-      console.log("Doc ID", documentId);
     })
     .catch(reject);  
   });
@@ -91,15 +88,15 @@ const getOne = (id) => {
 
 const remove = id => {
   return new Promise((resolve, reject) => {
-    getOne(id)
-      .then(file => {
-        return new Promise((resolve, reject) => {
-          fs.unlink(file.path, resolve);
-        })
-      })
+    if (!isNaN(Number(id))) {
+      getOne(id)
+      .then(file => file !== null ? fs.unlink(file?.path) : reject())
       .then(() => db.File.destroy({ where: { id }}))
       .then(resolve)
       .catch(reject);
+    } else {
+      return reject(`Invalid ID: ${id}`);
+    }
   })
 }
 
