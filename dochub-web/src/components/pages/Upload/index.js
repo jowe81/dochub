@@ -72,6 +72,19 @@ function Upload(){
     }
   }
 
+  const handleUpdate = (event) => {
+    const updates = {
+      id:document.id,
+    }
+    const field = event.target.getAttribute('data-field-name');
+    updates[field] = event.target.value;
+    axios.put(`/api/documents/${document.id}`, updates)
+    .then(res => {
+      refreshDocumentData();
+      console.log('Description updated');
+    });
+};
+
   const handleCheckboxClick = (event) => {
     console.log(event.target.checked, event.target.getAttribute('data-constraint-id'));
     const constraintId = event.target.getAttribute('data-constraint-id');
@@ -127,6 +140,14 @@ function Upload(){
 
   const restOfFormMarkup = (
     <div>
+      <Form.Group className="mb-3">
+        <Form.Label>Author:</Form.Label>
+        <Form.Control type="text" data-field-name="author" onBlur={handleUpdate}/>
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Short description:</Form.Label>
+        <Form.Control as="textarea" rows={3} data-field-name="description" onBlur={handleUpdate}/>
+      </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Select category(ies):</Form.Label>
         {getConstraintsMarkup('categories')}

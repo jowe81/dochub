@@ -36,9 +36,9 @@ const create = ({ title, author, constraints, userId }) => {
   });
 };
 
-const update = ({ id, title, author }) => { 
+const update = ({ id, title, description, author }) => { 
   return new Promise((resolve, reject) => {
-    db.Document.update({ title }, { where: { id }})
+    db.Document.update({ title, description, author }, { where: { id }})
     .then(res => {
       resolve(`new title ${title}, id ${id}`);
     }).catch(reject);

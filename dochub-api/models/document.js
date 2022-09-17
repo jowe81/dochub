@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
   Document.init({
     title: DataTypes.STRING,
     userId: DataTypes.INTEGER,
+    author: DataTypes.STRING,
+    description: DataTypes.TEXT,
   }, {
     sequelize,
     modelName: 'Document',

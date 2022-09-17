@@ -11,6 +11,12 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
+      author: {
+        type: Sequelize.STRING
+      },
+      description: {
+        type: Sequelize.TEXT
+      },
       userId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

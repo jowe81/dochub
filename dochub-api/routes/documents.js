@@ -54,8 +54,8 @@ router.post("/", (req, res, next) => {
 });
 
 router.put("/:id", (req, res, next) => {
-  const { id, title, author } = req.body;
-  documents.update({id, title, author})
+  const { id, title, description, author } = req.body;
+  documents.update({id, title, description, author})
     .then((data) => {
       res.json(`success: ${data}`);
     })
