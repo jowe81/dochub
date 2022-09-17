@@ -27,7 +27,6 @@ export default function Document() {
     getDocumentRecord(params.documentId)
       .then((result) => {
         _setDocument(result.data);
-        console.log("fetched:", result.data);
       });
   }, [params.documentId]);
 
@@ -38,7 +37,7 @@ export default function Document() {
         <span>Updated: {document.updatedAt}</span>
       </div>
       <div>
-        {document?.files?.map(file => <FileItem key={file.id} file={file} btns={{download: true, remove: true}}/>)}
+        {document?.files?.map(file => <FileItem key={file.id} file={file} btns={{download: true}}/>)}
       </div>
     </>
   );
