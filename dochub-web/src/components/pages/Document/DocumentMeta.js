@@ -17,7 +17,7 @@ export default function DocumentMeta ({document}) {
         <div className="detailsContainer">
           {authorMarkup}
           {descriptionMarkup}
-          <div className="text-muted">Last modified: {new Date(document.updatedAt).toLocaleDateString()} - {document.files.length} files</div>
+          <div className="text-muted">Last modified: {new Date(document.updatedAt).toLocaleDateString()} - {document.files?.length || 0} files</div>
         </div>
       </div>
     </> 
