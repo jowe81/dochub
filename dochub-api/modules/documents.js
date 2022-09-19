@@ -19,10 +19,14 @@ const updateConstraint = ({documentId, constraintId, checked}) => {
  * @param {name, email, plaintextPassword} 
  * @returns a Promise to the new user
  */
-const create = ({ title, author, constraints, userId }) => {
+const create = ({ title, author, constraints, description, userId }) => {
   return new Promise((resolve, reject) => {
-    db.Document.create({ title, author, userId})
-      .then(document => {
+    db.Document.create({ 
+      title, 
+      author:author || '', 
+      description:description || '', 
+      userId
+    }).then(document => {
         if (constraints) {
           document.addConstraints(constraints)
           .then(document => {

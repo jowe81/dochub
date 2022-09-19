@@ -43,8 +43,8 @@ router.post("/:id/update-constraint/", function(req, res){
  * Post a new document
  */
 router.post("/", (req, res, next) => {
-  const { title, constraints } = req.body;
-  documents.create({title, constraints, userId: req.session.user?.id || 1})
+  const { title, author, description, constraints } = req.body;
+  documents.create({title, author, description, constraints, userId: req.session.user?.id || 1})
     .then((document) => {
       res.json(document);
     })
