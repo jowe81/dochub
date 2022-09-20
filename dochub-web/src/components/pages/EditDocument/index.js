@@ -125,7 +125,7 @@ function Upload(){
   };
 
   const filesMarkup = document.Files?.map(file => (
-    <FileItem key={file.id} file={file} btns={{remove: true}}/>
+    <FileItem key={file.id} file={file} btns={{remove: true, download:true}}/>
   ));
 
 

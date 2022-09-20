@@ -6,11 +6,20 @@ var router = express.Router();
 const documents = require('../modules/documents');
 const files = require('../modules/files');
 
-router.get('/', function(req, res, next) {
-  documents.getAll().then(data => {
-    console.log(data);
-    res.json(data);
-  })
+// router.get('/', function(req, res, next) {
+//   documents.getAll().then(data => {
+//     console.log(data);
+//     res.json(data);
+//   })
+// });
+
+router.get('/', function(req, res) {
+  console.log(req.query, req.params);
+  const searchFor = req.query.searchFor || '';
+  console.log(`Searchin for ${searchFor}`);
+  documents
+    .getAll(searchFor)
+    .then(data => res.json(data));
 });
 
 router.get('/by/:constraintTypeName/', function(req, res) {
@@ -31,7 +40,7 @@ router.get('/:id', function(req, res, next) {
 
 
 router.post("/:id/update-constraint/", function(req, res){
-  const documentId = req.params.id;
+  const documentId = req.query.id;
   const { constraintId, checked } = req.body;
   documents.updateConstraint({documentId, constraintId, checked})
     .then(result => {

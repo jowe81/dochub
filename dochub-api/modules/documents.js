@@ -50,8 +50,35 @@ const update = ({ id, title, description, author }) => {
 };
   
 
-const getAll = () => {
-  return db.Document.findAll({ include: [db.User, db.Constraint, db.File] });
+const getAll = searchFor => {
+  return db.Document.findAll({ 
+    include: [
+      db.User, 
+      db.File,
+      {
+        model: db.Constraint,
+        where: {
+          label: {
+            [Op.like]: '%' + searchFor +'%'
+          }
+        },
+        required:false,      
+      }
+    ],
+    where: { 
+      [Op.or] : {
+        title: {
+          [Op.like]: '%' + searchFor + '%'
+        }, 
+        author: {
+          [Op.like]: '%' + searchFor + '%'
+        }, 
+        description: {
+          [Op.like]: '%' + searchFor + '%'
+        },                
+      },
+    },
+  });
 }
 
 const getOne = (documentId) => {

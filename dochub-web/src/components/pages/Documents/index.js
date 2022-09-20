@@ -1,10 +1,12 @@
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { Form } from 'react-bootstrap';
 import { Link, Outlet } from "react-router-dom";
 
 function Documents() {
   const [docs, setDocs] = useState([]);
+  const [filteredDocs, setFilteredDocs] = useState([]);
   useEffect(() => {
     axios.get('/api/documents')
       .then(res => {
@@ -22,8 +24,34 @@ function Documents() {
     </Link>
   ));
 
+  const updateFilter = (event) => {
+    event.preventDefault();
+
+    const filter = event.target.value;
+    console.log(filter);
+    axios.get(`/api/documents?searchFor=${filter}`, { searchFor: filter })
+      .then(res => setDocs(res.data));
+  }
+
+  const onKeyUp = (event) => {
+    if (event.charCode === 13) {
+      updateFilter(event);
+    }  
+  }
+
   return (
     <div>The Docs components
+      <div>
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label>Search for anything.</Form.Label>
+            <Form.Control 
+              type="text" 
+              onKeyPress={onKeyUp}
+            />
+          </Form.Group>       
+        </Form>
+      </div>
       {getDocs}
       <Outlet />
     </div>
