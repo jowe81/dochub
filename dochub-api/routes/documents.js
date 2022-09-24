@@ -33,14 +33,13 @@ router.get('/by/:constraintTypeName/', function(req, res) {
 
 router.get('/:id', function(req, res, next) {
   documents.getOne(req.params.id).then(data => {
-    console.log(data);
     res.json(data);
   })
 });
 
 
 router.post("/:id/update-constraint/", function(req, res){
-  const documentId = req.query.id;
+  const documentId = req.params.id;
   const { constraintId, checked } = req.body;
   documents.updateConstraint({documentId, constraintId, checked})
     .then(result => {
