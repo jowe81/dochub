@@ -28,7 +28,8 @@ const getByType = (where) => {
     include: { 
       model: db.ConstraintType, 
       where,
-    }
+    },
+    order: ['label'],
   })
 };
 
