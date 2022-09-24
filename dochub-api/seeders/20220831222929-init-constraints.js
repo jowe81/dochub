@@ -25,6 +25,26 @@ module.exports = {
         constraintTypeId: 1,
       },
       {
+        label: 'Allen&Heath QU24',
+        constraintTypeId: 1,
+      },
+      {
+        label: 'Ross NK Series Router',
+        constraintTypeId: 1,
+      },
+      {
+        label: 'Panasonic RP160',
+        constraintTypeId: 1,
+      },
+      {
+        label: 'Panasonic UE150',
+        constraintTypeId: 1,
+      },
+      {
+        label: 'Panasonic AJ-PX380',
+        constraintTypeId: 1,
+      },
+      {
         label: 'East Van',
         constraintTypeId: 2,
       },
