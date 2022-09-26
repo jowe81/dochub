@@ -1,0 +1,34 @@
+.constraintList {
+  padding:10px 5px;
+  border:1px solid rgb(190, 190, 190);
+  border-radius:3px;
+  overflow: auto;
+  margin-top:2px;
+  .constraintList-item {
+    padding:3px 5px;
+    float:left;
+    border:1px solid rgb(190, 190, 190);
+    margin:3px;
+    border-radius: 3px;
+
+    .constraintList-item-icon {
+      padding:0px 0px 0px 5px;
+      float:right;
+    }
+
+    .constraintList-item-icon:hover {
+      cursor: pointer;
+    }
+
+  }
+
+  .constraintList-item:hover {
+    background-color: rgb(255, 166, 166);
+  }
+
+  .constraintList-placeholder {
+    color: gray;
+    padding:0px 10px;
+  }
+
+}

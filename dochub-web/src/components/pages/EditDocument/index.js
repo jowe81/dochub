@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { Form } from 'react-bootstrap';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import { useParams } from 'react-router-dom';
 import FileItem from '../../FileItem';
+import ConstraintList from './ConstraintList';
+import './EditDocument.scss';
 
 import axios from 'axios';
 
@@ -82,6 +86,17 @@ function Upload(){
     });
   }
 
+  const updateConstraint = (constraintId, checked) => {
+    axios.post(`/api/documents/${document.id}/update-constraint/`, {
+      constraintId,
+      checked
+    }).then(res => {
+      refreshDocumentData();
+    });
+  }
+
+  const removeConstraint = (constraintId) => { updateConstraint(constraintId, false) }
+
   const retrieveConstraints = (name) => {
     return new Promise((resolve, reject) => {
       axios.get(`/api/constraints/byType?name=${name}`)
@@ -129,9 +144,35 @@ function Upload(){
   ));
 
 
+  const constraintIsCurrentlyChecked = (constraintId) => {
+    const constraintRecord = document.constraints.find(item => item.id === constraintId);
+    return constraintRecord ? true : false;
+  }
 
+  const handleKeyUp = (event) => {
+    if (event.keyCode === 13) {
+      addRemoveConstraint(event);
+    }
+  }
 
-	return( document &&
+  const addRemoveConstraint = (event, selectedConstraint) => {
+    //Find record if it exists
+    const value = event.target.value || selectedConstraint?.label;
+    const constraintRecord = constraints.keywords.find(item => item.label === value);
+    if (constraintRecord) {
+      axios.post(`/api/documents/${document.id}/update-constraint/`, {
+        constraintId: constraintRecord.id,
+        checked: !constraintIsCurrentlyChecked(constraintRecord.id),
+      }).then(refreshDocumentData);
+    }
+  }
+
+  const ac = (
+    <>
+    </>
+  );
+
+	return( document && document.constraints &&
     <div className=''>
       <Form className='DocumentForm'>
         <Form.Group className="mb-3">
@@ -147,16 +188,28 @@ function Upload(){
           <Form.Control as="textarea" rows={3} data-field-name="description" value={document.description} onChange={handleChange} onBlur={handleUpdate}/>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Select category(ies):</Form.Label>
+          <Form.Label>Category(ies):</Form.Label>
           {getConstraintsMarkup('categories')}
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Select location(s):</Form.Label>
+          <Form.Label>Location(s):</Form.Label>
           {getConstraintsMarkup('locations')}
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Select keyword(s):</Form.Label>
-          {getConstraintsMarkup('keywords')}
+          <Form.Label>Keyword(s):</Form.Label>
+          <Autocomplete
+            placeholder='type or select'
+            className='constraints-autocomplete'
+            options={constraints.keywords}
+            renderInput={(params) => <TextField {...params} label="" />}
+            onKeyUp={handleKeyUp}
+            onChange={addRemoveConstraint}
+          />
+          <ConstraintList 
+            constraints={document.constraints.filter(item => item.constraintTypeId === 1) } 
+            buttons={{remove: true}} 
+            removeItem={removeConstraint}
+          />          
         </Form.Group>
         <div>
           Files: 
