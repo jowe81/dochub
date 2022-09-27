@@ -2,6 +2,7 @@ const helpers = require("../modules/helpers");
 const db = require('../models');
 const { Op } = require("sequelize");
 const constraintTypes = require('./constraintTypes');
+const constraint = require("../models/constraint");
 
 //Set or remove a single constraint
 const updateConstraint = ({documentId, constraintId, checked}) => {
@@ -13,6 +14,42 @@ const updateConstraint = ({documentId, constraintId, checked}) => {
       .then(resolve)
   });
 };
+
+const hasConstraint = ({documentId, constraintId}) => {
+  return new Promise((resolve, reject) => {
+    if (!(constraintId > 0)) {
+      return reject("Invalid constraintId");
+    }
+    getOne(documentId)
+    .then(documentRecord => {      
+      if (documentRecord) {
+        const result = documentRecord.Constraints.filter(item => { 
+          return item.id === constraintId;
+        });
+        resolve(result.length ? true : false);  
+      } else {
+        reject();
+      }
+    })
+    .catch(reject);
+  })
+}
+
+const toggleConstraint = ({documentId, constraintId}) => {
+  return new Promise((resolve, reject) => {
+    hasConstraint({documentId, constraintId})
+      .then((hasConstraint) => {
+        const operationType = hasConstraint ? "removeConstraint" : "addConstraint";
+        db.Document
+          .findByPk(documentId)
+          .then(document => document[operationType](constraintId))
+          .then(resolve)    
+          .catch(reject);
+      })
+      .catch(reject);
+  });
+};
+
 
 /**
  * Create a document record
@@ -30,7 +67,6 @@ const create = ({ title, author, constraints, description, userId }) => {
         if (constraints) {
           document.addConstraints(constraints)
           .then(document => {
-            console.log(`added constraints`, constraints);
             resolve(document);        
           });
         } else {
@@ -117,6 +153,8 @@ module.exports = {
   getAll,
   getByConstraint,
   updateConstraint,
+  hasConstraint,
+  toggleConstraint,
   findAll,
   getOne,
 };
