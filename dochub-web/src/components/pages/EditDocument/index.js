@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { Form } from 'react-bootstrap';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import { useParams } from 'react-router-dom';
 import FileItem from '../../FileItem';
-import ConstraintList from './ConstraintList';
+import ConstraintListGroup from './ConstraintListGroup';
 import './EditDocument.scss';
 
 import axios from 'axios';
@@ -107,17 +105,33 @@ function Upload(){
     })
   }
 
-  useEffect(() => {
-    //Pull constraint types
-    const promises = [];
-    const constraintTypes = ['Keyword', 'Location', 'Category'];
-    constraintTypes.forEach(typeName => promises.push(retrieveConstraints(typeName)));
-    Promise.all(promises)
-      .then(([keywords, locations, categories]) => {
-        setConstraints({keywords, locations, categories});
-        //Pull document record
-        refreshDocumentData();
+  const retrieveAllConstraints = () => {
+    return new Promise((resolve, reject) => {
+      axios.get(`/api/constraints/`)
+      .then(res => {
+        resolve(res.data);
       })
+      .catch(reject);
+    })
+  }
+
+  useEffect(() => {
+    retrieveAllConstraints()
+      .then((data) => { 
+        setConstraints(data);
+        console.log('retrieved constraints', data);
+        refreshDocumentData();
+      });
+    // //Pull constraint types
+    // const promises = [];
+    // const constraintTypes = ['Keyword', 'Location', 'Category'];
+    // constraintTypes.forEach(typeName => promises.push(retrieveConstraints(typeName)));
+    // Promise.all(promises)
+    //   .then(([keywords, locations, categories]) => {
+    //     setConstraints({keywords, locations, categories});
+    //     //Pull document record
+    //     refreshDocumentData();
+    //   })
   }, []);
 
   const getConstraintsMarkup = (constraintTypeName) => {
@@ -151,26 +165,33 @@ function Upload(){
 
   const handleKeyUp = (event) => {
     if (event.keyCode === 13) {
-      addRemoveConstraint(event);
+      console.log("handleKeyUp", event.target.value);
+      toggleConstraint(event);
     }
   }
 
-  const addRemoveConstraint = (event, selectedConstraint) => {
+  const toggleConstraint = (event, selectedConstraint) => {
     //Find record if it exists
-    const value = event.target.value || selectedConstraint?.label;
-    const constraintRecord = constraints.keywords.find(item => item.label === value);
-    if (constraintRecord) {
-      axios.post(`/api/documents/${document.id}/update-constraint/`, {
-        constraintId: constraintRecord.id,
-        checked: !constraintIsCurrentlyChecked(constraintRecord.id),
+    let id;
+    if (selectedConstraint?.id) {
+      //Triggered by selecting in autocomplete or clicking a list item
+      id = selectedConstraint.id;
+    } else {
+      //Triggered by typing and hitting return
+      const value = event?.target?.value || selectedConstraint?.label;
+      const constraintRecord = constraints.find(item => item.label === value);
+      if (constraintRecord) {
+        id = constraintRecord.id;
+      } else if (value) {
+        //Got a newly typed constraint that we need to add. Figure out constraintTypeId??
+      }
+    }
+    if (id) {
+      axios.post(`/api/documents/${document.id}/update-constraint/toggle`, {
+        constraintId: id,
       }).then(refreshDocumentData);
     }
   }
-
-  const ac = (
-    <>
-    </>
-  );
 
 	return( document && document.constraints &&
     <div className=''>
@@ -189,27 +210,33 @@ function Upload(){
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Category(ies):</Form.Label>
-          {getConstraintsMarkup('categories')}
+          <ConstraintListGroup 
+            constraints = {constraints}
+            handleKeyUp = {handleKeyUp}
+            toggleConstraint = {toggleConstraint}
+            document = {document}
+            constraintTypeId = {3}
+          />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Location(s):</Form.Label>
-          {getConstraintsMarkup('locations')}
+          <ConstraintListGroup 
+            constraints = {constraints}
+            handleKeyUp = {handleKeyUp}
+            toggleConstraint = {toggleConstraint}
+            document = {document}
+            constraintTypeId = {2}
+          />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Keyword(s):</Form.Label>
-          <Autocomplete
-            placeholder='type or select'
-            className='constraints-autocomplete'
-            options={constraints.keywords}
-            renderInput={(params) => <TextField {...params} label="" />}
-            onKeyUp={handleKeyUp}
-            onChange={addRemoveConstraint}
+        <Form.Label>Keyword(s):</Form.Label>
+          <ConstraintListGroup 
+            constraints = {constraints}
+            handleKeyUp = {handleKeyUp}
+            toggleConstraint = {toggleConstraint}
+            document = {document}
+            constraintTypeId = {1}
           />
-          <ConstraintList 
-            constraints={document.constraints.filter(item => item.constraintTypeId === 1) } 
-            buttons={{remove: true}} 
-            removeItem={removeConstraint}
-          />          
         </Form.Group>
         <div>
           Files: 

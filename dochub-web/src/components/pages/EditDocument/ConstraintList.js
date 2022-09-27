@@ -1,12 +1,12 @@
 import { XCircle } from 'react-bootstrap-icons';
 
-export default function ConstraintList({constraints, buttons, removeItem}) {
+export default function ConstraintList({constraints, buttons, toggleConstraint}) {
 
-  console.log("constraints",constraints);
   const handleClick = event => {
     const id = event.target.closest('.constraintList-item').getAttribute('data-constraint-id');
-    removeItem(id);
+    toggleConstraint(undefined, { id });
   }
+
   return (
     <div className="constraintList">
       {constraints && constraints.map(item => <div className="constraintList-item" onClick={handleClick} data-constraint-id={item.id}>
