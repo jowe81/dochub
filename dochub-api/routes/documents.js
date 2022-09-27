@@ -38,6 +38,19 @@ router.get('/:id', function(req, res, next) {
 });
 
 
+router.post("/:id/update-constraint/toggle", function(req, res){
+  const documentId = req.params.id;
+  const constraintId = Number(req.body.constraintId);
+  documents.toggleConstraint({documentId, constraintId})
+    .then(result => {
+      res.json('success');
+    })
+    .catch(err => {
+      console.log("Error" , err);
+    });
+});
+
+
 router.post("/:id/update-constraint/", function(req, res){
   const documentId = req.params.id;
   const { constraintId, checked } = req.body;
