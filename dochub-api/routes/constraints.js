@@ -26,6 +26,15 @@ router.get('/:id', function(req, res, next) {
   })
 });
 
+router.get('/', function(req, res, next) {
+  constraints
+    .getAll()
+    .then(data => {
+      console.log(data)
+      res.json(data);
+    });
+});
+
 
 
 /**
