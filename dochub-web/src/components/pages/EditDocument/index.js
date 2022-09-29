@@ -36,6 +36,19 @@ function Upload(){
     }
   }
 
+  const retrieveAllConstraints = () => {
+    return axios.get(`/api/constraints/`)
+    .then(res => {
+      setConstraints(res.data);
+      refreshDocumentData();
+    })
+  }
+
+  useEffect(() => {
+    retrieveAllConstraints();
+  }, []);
+
+
 	const handleFileSubmission = (event) => {
     const formData = new FormData();
     console.log(`Uploading file for document #${document.id}, ${document.title}`, event.target.files.length);
@@ -70,107 +83,8 @@ function Upload(){
     document[field]=event.target.value;
     _setDocument(document);
   }
-
-  const handleCheckboxClick = (event) => {
-    console.log(event.target.checked, event.target.getAttribute('data-constraint-id'));
-    const constraintId = event.target.getAttribute('data-constraint-id');
-    const checked = event.target.checked;
-    axios.post(`/api/documents/${document.id}/update-constraint/`, {
-      constraintId,
-      checked
-    }).then(res => {
-      console.log(res);
-      refreshDocumentData();
-    });
-  }
-
-  const updateConstraint = (constraintId, checked) => {
-    axios.post(`/api/documents/${document.id}/update-constraint/`, {
-      constraintId,
-      checked
-    }).then(res => {
-      refreshDocumentData();
-    });
-  }
-
-  const removeConstraint = (constraintId) => { updateConstraint(constraintId, false) }
-
-  const retrieveConstraints = (name) => {
-    return new Promise((resolve, reject) => {
-      axios.get(`/api/constraints/byType?name=${name}`)
-      .then(res => {
-        resolve(res.data);
-      })
-      .catch(reject);
-    })
-  }
-
-  const retrieveAllConstraints = () => {
-    return new Promise((resolve, reject) => {
-      axios.get(`/api/constraints/`)
-      .then(res => {
-        resolve(res.data);
-      })
-      .catch(reject);
-    })
-  }
-
-  useEffect(() => {
-    retrieveAllConstraints()
-      .then((data) => { 
-        setConstraints(data);
-        console.log('retrieved constraints', data);
-        refreshDocumentData();
-      });
-    // //Pull constraint types
-    // const promises = [];
-    // const constraintTypes = ['Keyword', 'Location', 'Category'];
-    // constraintTypes.forEach(typeName => promises.push(retrieveConstraints(typeName)));
-    // Promise.all(promises)
-    //   .then(([keywords, locations, categories]) => {
-    //     setConstraints({keywords, locations, categories});
-    //     //Pull document record
-    //     refreshDocumentData();
-    //   })
-  }, []);
-
-  const getConstraintsMarkup = (constraintTypeName) => {
-    return constraints[constraintTypeName] && constraints[constraintTypeName].map( item => {
-      return (
-        <div key={`default-${item.id}`} className="mb-3">
-          <Form.Check 
-            type='checkbox'
-            id={`option-${constraintTypeName}.${item.id}`}
-            data-constraint-id={item.id}
-            label={`${item.label}`}
-            className={`option-${constraintTypeName}`}
-            onClick={handleCheckboxClick}
-            checked={document.constraints?.find(constraintRecord => constraintRecord.id === item.id)}
-            defaultChecked={false}
-          />
-        </div>  
-      );
-    });
-  };
-
-  const filesMarkup = document.Files?.map(file => (
-    <FileItem key={file.id} file={file} btns={{remove: true, download:true}}/>
-  ));
-
-
-  const constraintIsCurrentlyChecked = (constraintId) => {
-    const constraintRecord = document.constraints.find(item => item.id === constraintId);
-    return constraintRecord ? true : false;
-  }
-
-  const handleKeyUp = (event) => {
-    if (event.keyCode === 13) {
-      console.log("handleKeyUp", event.target.value);
-      toggleConstraint(event);
-    }
-  }
-
-  const toggleConstraint = (event, selectedConstraint) => {
+  
+  const toggleConstraint = (event, selectedConstraint, constraintTypeId) => {
     //Find record if it exists
     let id;
     if (selectedConstraint?.id) {
@@ -184,6 +98,12 @@ function Upload(){
         id = constraintRecord.id;
       } else if (value) {
         //Got a newly typed constraint that we need to add. Figure out constraintTypeId??
+        axios.post(`/api/constraints`, {
+          label: value,
+          constraintTypeId,
+        }).then(res => {
+          retrieveAllConstraints();
+        })
       }
     }
     if (id) {
@@ -212,7 +132,6 @@ function Upload(){
           <Form.Label>Category(ies):</Form.Label>
           <ConstraintListGroup 
             constraints = {constraints}
-            handleKeyUp = {handleKeyUp}
             toggleConstraint = {toggleConstraint}
             document = {document}
             constraintTypeId = {3}
@@ -222,7 +141,6 @@ function Upload(){
           <Form.Label>Location(s):</Form.Label>
           <ConstraintListGroup 
             constraints = {constraints}
-            handleKeyUp = {handleKeyUp}
             toggleConstraint = {toggleConstraint}
             document = {document}
             constraintTypeId = {2}
@@ -232,7 +150,6 @@ function Upload(){
         <Form.Label>Keyword(s):</Form.Label>
           <ConstraintListGroup 
             constraints = {constraints}
-            handleKeyUp = {handleKeyUp}
             toggleConstraint = {toggleConstraint}
             document = {document}
             constraintTypeId = {1}
@@ -241,7 +158,7 @@ function Upload(){
         <div>
           Files: 
           <div>
-            {filesMarkup}
+            {document.Files?.map(file => (<FileItem key={file.id} file={file} btns={{remove: true, download:true}}/>))}
           </div>
         </div>
         <Form.Group className="mb-3">
