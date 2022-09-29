@@ -18,6 +18,8 @@ const create = ({ label, constraintTypeName }) => {
   });
 };
 
+const createByTypeId = ({ label, constraintTypeId }) => db.Constraint.create({ label, constraintTypeId });
+
 /**
  * Return constraints by type. Where can contain id or name.
  * @param {*} where 
@@ -43,6 +45,7 @@ const getOne = (id) => {
 
 module.exports = {
   create,
+  createByTypeId,
   getByType,
   getAll,
   getOne,
