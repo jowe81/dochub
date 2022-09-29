@@ -35,20 +35,26 @@ router.get('/', function(req, res, next) {
     });
 });
 
-
-
-/**
- * Post a new category
- */
 router.post("/", (req, res, next) => {
-  const { label, constraintTypeName } = req.body;
-  constraints.create({label, constraintTypeName})
+  const { label, constraintTypeName, constraintTypeId } = req.body;
+  if (constraintTypeId) {
+    constraints.createByTypeId({label, constraintTypeId})
     .then((constraint) => {
       res.json(constraint);
     })
     .catch(e => {
       res.status(500).send(`${e}`);
     });
+
+  } else {
+    constraints.create({label, constraintTypeName})
+    .then((constraint) => {
+      res.json(constraint);
+    })
+    .catch(e => {
+      res.status(500).send(`${e}`);
+    });
+  }
 });
 
 module.exports = router;
