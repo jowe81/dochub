@@ -20,12 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Constraint.init({
-    label: DataTypes.STRING,
-    constraintTypeId: DataTypes.INTEGER,
+    label: { type: DataTypes.STRING,  unique: 'compositeIndex' },
+    constraintTypeId: { type: DataTypes.INTEGER, unique: 'compositeIndex' },
   }, {
     sequelize,
     modelName: 'Constraint',
     timestamps: false,
+    indexes: [{ unique: true, fields: ['label', 'constraintTypeId'] }],
   });
   return Constraint;
 };
