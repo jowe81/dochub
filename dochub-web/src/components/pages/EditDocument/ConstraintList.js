@@ -9,7 +9,7 @@ export default function ConstraintList({constraints, buttons, toggleConstraint})
 
   return (
     <div className="constraintList">
-      {constraints && constraints.map(item => <div className="constraintList-item" onClick={handleClick} data-constraint-id={item.id}>
+      {constraints && constraints.map(item => <div className="constraintList-item" onClick={handleClick} data-constraint-id={item.id} key={item.id}>
         {item.label}
         <div className="constraintList-item-icon">
           {buttons?.remove && (<XCircle onClick={handleClick} />)}
