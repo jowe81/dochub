@@ -93,11 +93,6 @@ const getAll = searchFor => {
       db.File,
       {
         model: db.Constraint,
-        where: {
-          label: {
-            [Op.like]: '%' + searchFor +'%'
-          }
-        },
         required:false,      
       }
     ],
@@ -112,6 +107,9 @@ const getAll = searchFor => {
         description: {
           [Op.like]: '%' + searchFor + '%'
         },                
+        '$Constraints.label$': {
+          [Op.like]: '%' + searchFor + '%',
+        }
       },
     },
   });
