@@ -15,20 +15,21 @@ module.exports = {
     */
     await documents.create({
       title:"Configuring the SD9 console", 
-      author: "Mark",
+      author: "Mark Smith",
       constraints: [1, 2, 5, 7],
       userId: 2
     });
     await documents.create({
       title:"Ross Carbonite Quickstart Guide", 
-      author: "Mark",
+      author: "Mark Smith",
       constraints: [3, 5, 8],
       userId: 1
     });
     await documents.create({
       title:"Onyx Manual", 
-      author: "Matthew",
+      author: "Matthew Johnson",
       constraints: [5, 9, 10],
+      description: "A brief manual of the Onyx lighting software, with configuration details and best practices for Tenth Church",
       userId: 1
     });
   },
