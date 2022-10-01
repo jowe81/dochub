@@ -3,13 +3,14 @@ import { Button } from 'react-bootstrap';
 import { Download, Trash } from 'react-bootstrap-icons';
 import axios from 'axios';
 import './FileItem.scss';
+import { FileEarmark } from 'react-bootstrap-icons';
 
-export default function FileItem({file, btns}) {
+export default function FileItem({file, btns, tiny}) {
 
   const [render, setRender] = useState(file ? true : false);
 
   //From https://code-boxx.com/download-file-javascript-fetch/
-  const downloadFile = () => {
+  const downloadFile = (e) => {
     if (!(btns.download && file.id)) return;
     const url = `/api/files/${file.id}/download`;
     fetch(url)
@@ -39,17 +40,28 @@ export default function FileItem({file, btns}) {
     return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
   }
 
-  return (
-    render && 
-    <div className="fileItem" onClick={() => downloadFile(file.id)}>
-      {file.originalName}
-      {btns?.remove && <Button className="fileBtn" size="sm" variant="danger" onClick={removeFile} data-file-id={file.id}><Trash /></Button>}
-      {btns?.download && <Button className="fileBtn" onClick={downloadFile} size="sm" variant="primary" data-file-id={file.id}><Download /></Button>}
-      <div>
-        <small>
-          {file.extension.toUpperCase()} | {bytesToSize(file.size)} | Uploaded {new Date(file.createdAt).toLocaleDateString()} | ID:{file.id}
-        </small>
+  if (tiny) {
+    return (
+      render && 
+      <div className="fileItem-tiny" onClick={(e) => downloadFile(file.id)}>
+        <span className="icon"><FileEarmark /></span>{file.originalName}
       </div>
-    </div>
-  );
+    );
+  
+  } else {
+    return (
+      render && 
+      <div className="fileItem" onClick={() => downloadFile(file.id)}>
+        {file.originalName}
+        {btns?.remove && <Button className="fileBtn" size="sm" variant="danger" onClick={removeFile} data-file-id={file.id}><Trash /></Button>}
+        {btns?.download && <Button className="fileBtn" onClick={downloadFile} size="sm" variant="primary" data-file-id={file.id}><Download /></Button>}
+        <div>
+          <small>
+            {file.extension.toUpperCase()} | {bytesToSize(file.size)} | Uploaded {new Date(file.createdAt).toLocaleDateString()} | ID:{file.id}
+          </small>
+        </div>
+      </div>
+    );  
+  }
+
 }

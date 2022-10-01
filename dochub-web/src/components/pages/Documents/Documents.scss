@@ -1,19 +1,16 @@
 .document {
-  padding:5px;
-  margin:5px;
+  padding:.5rem;
+  margin:.5rem;
 }
 
+
+
 .document:hover {
-  background-color: antiquewhite;
+  //background-color: antiquewhite;
 }
 
 .document-title {
   font-size:110%;
-}
-
-.document-author {
-  color: gray;
-  font-size:80%;
 }
 
 .document-constraint {
