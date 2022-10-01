@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import { Link, Outlet } from "react-router-dom";
+import DocTable from './DocTable';
 
 function Documents() {
   const [docs, setDocs] = useState([]);
@@ -40,7 +41,7 @@ function Documents() {
   }
 
   return (
-    <div>The Docs components
+    <div>
       <div>
         <Form>
           <Form.Group className="mb-3">
@@ -52,7 +53,7 @@ function Documents() {
           </Form.Group>       
         </Form>
       </div>
-      {getDocs}
+      <DocTable documents={docs} />
       <Outlet />
     </div>
   );
