@@ -16,8 +16,9 @@ router.post("/login", (req, res, next) => {
 
 router.get("/logout", errorIfUnauthorized, (req, res) => {
   const name = req.session.user.name;
-  res.end(`Goodbye, ${name}!`);
   req.session = null;
+  res.end(`Goodbye, ${name}!`);
+  
 });
 
 router.get("/me", errorIfUnauthorized, (req, res) => {
