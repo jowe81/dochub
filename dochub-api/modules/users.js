@@ -18,6 +18,13 @@ const create = ({ name, email, plaintextPassword }) => {
   });
 };
 
+const findByEmail = email => {
+  console.log("looking for email", email);
+  return db.User.findOne({
+    where: { email }
+  });
+}
+
 const getAll = () => {
   return db.User.findAll();
 }
@@ -25,4 +32,5 @@ const getAll = () => {
 module.exports = {
   create,
   getAll,
+  findByEmail
 };

@@ -2,10 +2,11 @@ const router = require("express").Router();
 const errorIfUnauthorized = require("../middleware/errorIfUnauthorized");
 
 const db = require('../models');
+const users = require('../modules/users');
 
 router.post("/login", (req, res, next) => {
   const email = req.body.email;
-  User.findOne({ where: { email }})
+  users.findByEmail(email)
     .then(user => {
       req.session.user = user;
       res.json(user);
