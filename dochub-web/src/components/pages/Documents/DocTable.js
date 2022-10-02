@@ -1,13 +1,16 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom";
-import { Collection, Key, GeoAlt, FileEarmark } from "react-bootstrap-icons";
+import { useNavigate, Link, useOutletContext } from "react-router-dom";
+import { Collection, Key, GeoAlt } from "react-bootstrap-icons";
 import FileItem from "../../FileItem";
 import './Documents.scss';
 
 export default function DocTable (props) {
 
   const { documents } = props;
-  const navigate = useNavigate();
+
+  const navigate = useNavigate();  
+  const appData = useOutletContext();
+
   const handleClick = (event) => {
     console.log(event.originalTarget, event.target === event.originalTarget);
     const documentId = event.currentTarget.getAttribute("data-document-id");
@@ -33,7 +36,7 @@ export default function DocTable (props) {
 
   const getFilesMarkup = document => {
     return document.Files.map(file => (
-      <Row className="document-constraint cursor-pointer">
+      <Row className="document-constraint cursor-pointer" key={file.id}>
         <Col className="text-primary">
           <FileItem file={file} tiny={true} btns={{download: true}} />
         </Col>
@@ -90,7 +93,13 @@ export default function DocTable (props) {
                       {keywords}
                     </Col>
                   </Row>      
-                }      
+                }  
+                {appData.user?.id && 
+                  <Row className="" >
+                    <Col className=""><small><Link to={`/documents/${doc.id}/edit`} >Edit this document</Link></small></Col>
+                  </Row>
+
+                }    
               </Container>
             </Row>
           )

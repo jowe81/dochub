@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Navigation from "./components/Navigation";
 import useApplicationData from "./hooks/useApplicationData";
 import './App.scss';
 
 function App() {
   const appData = useApplicationData({});
   return (
-    <div className="App">
-      <Navigation />
+    <div className="App">      
       <Outlet context={appData} />
     </div>
   );

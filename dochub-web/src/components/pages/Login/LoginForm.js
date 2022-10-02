@@ -1,11 +1,12 @@
 import { Form, Button } from 'react-bootstrap';
 import './LoginForm.scss';
-import { useOutletContext } from "react-router-dom";
 
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 
 function LoginForm() {
   const appData = useOutletContext();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,7 +14,15 @@ function LoginForm() {
       email: document.getElementById("formBasicEmail").value,
       password: document.getElementById("formBasicPassword").value,
     }
-    appData.login(credentials);
+    appData
+      .login(credentials)
+      .then(user => {
+        appData.user = user;
+        navigate("/documents");
+      })
+      .catch(err => {
+        console.log("Error logging in");
+      })
   }
 
   return (

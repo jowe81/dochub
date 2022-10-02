@@ -19,12 +19,12 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="about" element={<About />} />
+          <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />}/>
-          <Route path="documents" element={<Documents />} />
-          <Route path="documents/:documentId/edit" element={<EditDocument />} />
-          <Route path="documents/:documentId" element={<Document />} />
-          <Route path="upload" element={<Upload />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/documents/:documentId/edit" element={<EditDocument />} />
+          <Route path="/documents/:documentId" element={<Document />} />
+          <Route path="/upload" element={<Upload />} />
           <Route
             path="*"
             element={
