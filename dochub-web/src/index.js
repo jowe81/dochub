@@ -11,6 +11,7 @@ import Documents from './components/pages/Documents';
 import Document from './components/pages/Document';
 import EditDocument from './components/pages/EditDocument';
 import Upload from './components/pages/Upload';
+import Logout from './components/pages/Logout';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -21,6 +22,7 @@ root.render(
         <Route path="/" element={<App />}>
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />}/>
+          <Route path="/logout" element={<Logout />}/>
           <Route path="/documents" element={<Documents />} />
           <Route path="/documents/:documentId/edit" element={<EditDocument />} />
           <Route path="/documents/:documentId" element={<Document />} />

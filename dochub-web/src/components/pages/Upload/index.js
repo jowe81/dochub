@@ -3,9 +3,13 @@ import { Form } from 'react-bootstrap';
 
 import axios from 'axios';
 
+import { useOutletContext } from "react-router-dom";
+import Navigation
+ from '../../Navigation';
 function Upload(){
 
   const navigate = useNavigate();
+  const appData = useOutletContext();
 
   const createDocumentWithTitle = (event) => {
     const title = event.target.value;
@@ -23,19 +27,20 @@ function Upload(){
   }
 
   return(
-    <div>
-      <div className=''>
-        <Form className='DocumentForm'>
-          <Form.Group className="mb-3">
-            <Form.Label>Enter New Document Title</Form.Label>
-            <Form.Control 
-              type="text" 
-              onBlur={createDocumentWithTitle} 
-            />
-          </Form.Group>
-        </Form>
+    <>
+      <Navigation appData={appData}/>
+      <div className='main-content'>
+          <Form className=''>
+            <Form.Group className="mb-3">
+              <Form.Label>Enter New Document Title</Form.Label>
+              <Form.Control 
+                type="text" 
+                onBlur={createDocumentWithTitle} 
+              />
+            </Form.Group>
+          </Form>
       </div>
-	  </div>
+    </>
 	)
 }
 

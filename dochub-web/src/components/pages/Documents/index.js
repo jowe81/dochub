@@ -2,7 +2,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
-import { Link, useOutletContext } from "react-router-dom";
 import DocTable from './DocTable';
 import Navigation from "../../Navigation";
 
@@ -10,7 +9,6 @@ import Navigation from "../../Navigation";
 
 
 function Documents() {
-  const appData = useOutletContext();
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {
@@ -37,7 +35,7 @@ function Documents() {
 
   return (
     <>
-      <Navigation appData={appData} />
+      <Navigation />
       <div className="main-content">
         <div className="search-form">
           <Form>

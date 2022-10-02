@@ -1,14 +1,12 @@
 import LoginForm from "./LoginForm";
-import { useOutletContext } from "react-router-dom";
 import Navigation from "../../Navigation";
 
 function Login() {
-  const appData = useOutletContext();
 
   return (
     <>
-      <Navigation appData={appData} />;
-      <div>      
+      <Navigation />
+      <div className="main-content">
         <LoginForm />
       </div>
     </>

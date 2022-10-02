@@ -1,12 +1,14 @@
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Navigation = ({ appData }) => {
+import { useOutletContext } from "react-router-dom";
+
+const Navigation = () => {
+
+  const appData = useOutletContext();
+
   return (
     <Nav defaultActiveKey="/home">
-      <Nav.Item>
-        <Link role="button" className="nav-link" to="/">Home</Link>
-      </Nav.Item>
       <Nav.Item>
         <Link role="button" className="nav-link" to="/documents">Docs</Link>
       </Nav.Item>

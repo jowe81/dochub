@@ -1,6 +1,11 @@
+import Navigation from "../Navigation";
+
 function About() {
   return (
-    <div>About page</div>
+    <>
+      <Navigation />
+      <div className="main-content">About page</div>
+    </>
   );
 }
 

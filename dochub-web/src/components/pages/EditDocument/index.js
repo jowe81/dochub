@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import FileItem from '../../FileItem';
 import ConstraintListGroup from './ConstraintListGroup';
 import './EditDocument.scss';
-
 import axios from 'axios';
+import Navigation from '../../Navigation';
 
 function Upload(){
 
@@ -114,64 +114,67 @@ function Upload(){
   }
 
 	return( document && document.constraints &&
-    <div className=''>
-      <Form className='DocumentForm'>
-        <Form.Group className="mb-3">
-          <Form.Label>Document Title</Form.Label>
-          <Form.Control type="text" data-field-name="title" value={document.title} onChange={handleChange} onBlur={handleUpdate}/>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Author:</Form.Label>
-          <Form.Control type="text" data-field-name="author" value={document.author} onChange={handleChange} onBlur={handleUpdate}/>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Short description:</Form.Label>
-          <Form.Control as="textarea" rows={3} data-field-name="description" value={document.description} onChange={handleChange} onBlur={handleUpdate}/>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Category(ies):</Form.Label>
-          <ConstraintListGroup 
-            constraints = {constraints}
-            toggleConstraint = {toggleConstraint}
-            document = {document}
-            constraintTypeId = {3}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Location(s):</Form.Label>
-          <ConstraintListGroup 
-            constraints = {constraints}
-            toggleConstraint = {toggleConstraint}
-            document = {document}
-            constraintTypeId = {2}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-        <Form.Label>Keyword(s):</Form.Label>
-          <ConstraintListGroup 
-            constraints = {constraints}
-            toggleConstraint = {toggleConstraint}
-            document = {document}
-            constraintTypeId = {1}
-          />
-        </Form.Group>
-        <div>
-          Files: 
+    <>
+      <Navigation />
+      <div className='main-content'>
+        <Form className=''>
+          <Form.Group className="mb-3">
+            <Form.Label>Document Title</Form.Label>
+            <Form.Control type="text" data-field-name="title" value={document.title} onChange={handleChange} onBlur={handleUpdate}/>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Author:</Form.Label>
+            <Form.Control type="text" data-field-name="author" value={document.author} onChange={handleChange} onBlur={handleUpdate}/>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Short description:</Form.Label>
+            <Form.Control as="textarea" rows={3} data-field-name="description" value={document.description} onChange={handleChange} onBlur={handleUpdate}/>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Category(ies):</Form.Label>
+            <ConstraintListGroup 
+              constraints = {constraints}
+              toggleConstraint = {toggleConstraint}
+              document = {document}
+              constraintTypeId = {3}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Location(s):</Form.Label>
+            <ConstraintListGroup 
+              constraints = {constraints}
+              toggleConstraint = {toggleConstraint}
+              document = {document}
+              constraintTypeId = {2}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+          <Form.Label>Keyword(s):</Form.Label>
+            <ConstraintListGroup 
+              constraints = {constraints}
+              toggleConstraint = {toggleConstraint}
+              document = {document}
+              constraintTypeId = {1}
+            />
+          </Form.Group>
           <div>
-            {document.Files?.map(file => (<FileItem key={file.id} file={file} btns={{remove: true, download:true}}/>))}
+            Files: 
+            <div>
+              {document.Files?.map(file => (<FileItem key={file.id} file={file} btns={{remove: true, download:true}}/>))}
+            </div>
           </div>
-        </div>
-        <Form.Group className="mb-3">
-          <Form.Label>Select file to upload</Form.Label>
-          <Form.Control 
-            type="file"
-            name="file"
-            onChange={handleFileSubmission}
-            id='form-file'
-          />
-        </Form.Group>
-      </Form>
-    </div>
+          <Form.Group className="mb-3">
+            <Form.Label>Select file to upload</Form.Label>
+            <Form.Control 
+              type="file"
+              name="file"
+              onChange={handleFileSubmission}
+              id='form-file'
+            />
+          </Form.Group>
+        </Form>
+      </div>
+    </>
 	)
 }
 
