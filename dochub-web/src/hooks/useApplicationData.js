@@ -9,7 +9,7 @@ export default function useApplicationData(initialState) {
 
   const login = ({email, password}) => {
     return new Promise((resolve, reject) => {
-      axios.post("/login", {email, password})
+      axios.post("/api/session/login", {email, password})
         .then(res => {
           setUser({...res.data});
           console.log(`Logged in as ${res.data.first_name}`);

@@ -1,10 +1,24 @@
 import { Form, Button } from 'react-bootstrap';
 import './LoginForm.scss';
+import { useOutletContext } from "react-router-dom";
+
+
 
 function LoginForm() {
+  const appData = useOutletContext();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const credentials = {
+      email: document.getElementById("formBasicEmail").value,
+      password: document.getElementById("formBasicPassword").value,
+    }
+    appData.login(credentials);
+  }
+
   return (
     <div className='LoginForm'>
-      <Form>
+      <Form onSubmit={handleSubmit}>
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

@@ -13,13 +13,14 @@ import EditDocument from './components/pages/EditDocument';
 import Upload from './components/pages/Upload';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="about" element={<About />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/login" element={<Login />}/>
           <Route path="documents" element={<Documents />} />
           <Route path="documents/:documentId/edit" element={<EditDocument />} />
           <Route path="documents/:documentId" element={<Document />} />
