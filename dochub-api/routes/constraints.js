@@ -3,6 +3,9 @@ var router = express.Router();
 
 const constraints = require('../modules/constraints');
 
+const errorIfUnauthorized = require("../middleware/errorIfUnauthorized");
+
+
 //Get constraints by type; specify either type id or type name
 router.get('/byType', function(req, res, next) {
   const options = {};
@@ -35,7 +38,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", errorIfUnauthorized, (req, res, next) => {
   const { label, constraintTypeName, constraintTypeId } = req.body;
   if (constraintTypeId) {
     constraints.createByTypeId({label, constraintTypeId})

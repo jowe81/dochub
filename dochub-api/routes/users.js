@@ -3,7 +3,10 @@ var router = express.Router();
 
 const users = require('../modules/users');
 
-router.get('/', function(req, res, next) {
+const errorIfUnauthorized = require("../middleware/errorIfUnauthorized");
+
+
+router.get('/', errorIfUnauthorized, function(req, res, next) {
   users.getAll().then(data => {
     console.log(data);
     res.json(data);

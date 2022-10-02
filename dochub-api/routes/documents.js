@@ -6,12 +6,7 @@ var router = express.Router();
 const documents = require('../modules/documents');
 const files = require('../modules/files');
 
-// router.get('/', function(req, res, next) {
-//   documents.getAll().then(data => {
-//     console.log(data);
-//     res.json(data);
-//   })
-// });
+const errorIfUnauthorized = require("../middleware/errorIfUnauthorized");
 
 router.get('/', function(req, res) {
   console.log(req.query, req.params);
@@ -37,8 +32,9 @@ router.get('/:id', function(req, res, next) {
   })
 });
 
+/* Protected write operations below */
 
-router.post("/:id/update-constraint/toggle", function(req, res){
+router.post("/:id/update-constraint/toggle", errorIfUnauthorized, function(req, res){
   const documentId = req.params.id;
   const constraintId = Number(req.body.constraintId);
   documents.toggleConstraint({documentId, constraintId})
@@ -50,8 +46,7 @@ router.post("/:id/update-constraint/toggle", function(req, res){
     });
 });
 
-
-router.post("/:id/update-constraint/", function(req, res){
+router.post("/:id/update-constraint/", errorIfUnauthorized, function(req, res){
   const documentId = req.params.id;
   const { constraintId, checked } = req.body;
   documents.updateConstraint({documentId, constraintId, checked})
@@ -60,10 +55,7 @@ router.post("/:id/update-constraint/", function(req, res){
     });
 });
 
-/**
- * Post a new document
- */
-router.post("/", (req, res, next) => {
+router.post("/", errorIfUnauthorized, (req, res, next) => {
   const { title, author, description, constraints } = req.body;
   documents.create({title, author, description, constraints, userId: req.session.user?.id || 1})
     .then((document) => {
@@ -74,7 +66,7 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", errorIfUnauthorized, (req, res, next) => {
   const { id, title, description, author } = req.body;
   documents.update({id, title, description, author})
     .then((data) => {

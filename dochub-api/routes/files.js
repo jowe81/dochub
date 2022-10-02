@@ -3,6 +3,8 @@ var router = express.Router();
 
 const files = require('../modules/files');
 
+const errorIfUnauthorized = require("../middleware/errorIfUnauthorized");
+
 router.get('/', function(req, res, next) {
   files.getAll().then(data => {
     res.json(data);
@@ -34,7 +36,7 @@ router.get('/:id/download', function(req, res, next) {
 /**
  * Post a new file
  */
-router.post("/", (req, res, next) => {
+router.post("/", errorIfUnauthorized, (req, res, next) => {
   const documentId = req.query.documentId;
   const IncomingForm = require('formidable').IncomingForm
   const form = new IncomingForm()
@@ -56,7 +58,7 @@ router.post("/", (req, res, next) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", errorIfUnauthorized, (req, res) => {
   files
     .remove(req.params.id)
     .then(() => res.end("file deleted"))
