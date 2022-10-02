@@ -40,7 +40,7 @@ export default function useApplicationData(initialState) {
   }
 
   const logout = () => {
-    axios.get("/logout")
+    return axios.get("/api/session/logout")
       .then(() => {
         setUser({});
         console.log("Logged out successfully");
