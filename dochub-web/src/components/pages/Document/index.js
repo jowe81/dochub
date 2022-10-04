@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import FileItem from "../../FileItem";
 import DocumentMeta from "./DocumentMeta";
+import FullDocument from "./FullDocument";
+import Navigation from "../../Navigation";
 
 export default function Document() {
 
@@ -31,12 +33,10 @@ export default function Document() {
       });
   }, [params.documentId]);
 
-  return (
+  return document?.id && (
     <>
-      <DocumentMeta document={document} />
-      <div className="filesContainer">
-        {document?.files?.map(file => <FileItem key={file.id} file={file} btns={{download: true}}/>)}
-      </div>
+      <Navigation />
+      <FullDocument document={document} />
     </>
   );
 
