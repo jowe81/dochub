@@ -14,11 +14,11 @@ require('./db/connection');
 
 const db = require('./models')
 
-var indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const sessionRouter = require('./routes/session');
 const documentsRouter = require('./routes/documents');
 const constraintsRouter = require('./routes/constraints');
+const constraintTypesRouter = require('./routes/constraintTypes');
 const filesRouter = require('./routes/files');
 
 const app = express();
@@ -42,12 +42,12 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 const apiPath = '/api';
 app.use(`${apiPath}/users`, usersRouter);
 app.use(`${apiPath}/session`, sessionRouter);
 app.use(`${apiPath}/documents`, documentsRouter);
 app.use(`${apiPath}/constraints`, constraintsRouter);
+app.use(`${apiPath}/constraintTypes`, constraintTypesRouter);
 app.use(`${apiPath}/files`, filesRouter);
 
 // catch 404 and forward to error handler
