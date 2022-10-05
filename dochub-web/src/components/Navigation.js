@@ -30,6 +30,9 @@ const Navigation = () => {
         <Nav.Item>
           <Link role="button" className="nav-link" to="/logout">Logout</Link>
         </Nav.Item>    
+        <Nav.Item>
+          <Link role="button" className="nav-link" to="/settings">Settings</Link>
+        </Nav.Item>    
         <Nav.Item className="my-auto text-secondary">
             {appData.user.email}
         </Nav.Item>
