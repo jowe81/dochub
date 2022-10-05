@@ -32,4 +32,10 @@ router.post("/", errorIfUnauthorized, (req, res, next) => {
   });
 });
 
+router.delete("/:id", errorIfUnauthorized, (req, res) => {
+  constraintTypes
+    .remove(req.params.id)
+    .then((data) => res.json(data));
+});
+
 module.exports = router;
