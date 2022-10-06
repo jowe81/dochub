@@ -17,8 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ConstraintType.init({
-    name: DataTypes.STRING
-  }, {
+    name: {
+      type: DataTypes.STRING
+    },
+    userEditable: {
+      type: DataTypes.BOOLEAN,
+    }
+}, {
     sequelize,
     modelName: 'ConstraintType',
     timestamps: false,

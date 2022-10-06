@@ -11,6 +11,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      userEditable: {
+        type: Sequelize.BOOLEAN,
+      }
     });
   },
   async down(queryInterface, Sequelize) {
