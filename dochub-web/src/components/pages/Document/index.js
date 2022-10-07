@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import FileItem from "../../FileItem";
-import DocumentMeta from "./DocumentMeta";
 import FullDocument from "./FullDocument";
 import Navigation from "../../Navigation";
+import { Container } from "react-bootstrap";
 
 export default function Document() {
 
@@ -36,7 +35,9 @@ export default function Document() {
   return document?.id && (
     <>
       <Navigation />
-      <FullDocument document={document} />
+      <Container className="main-content">
+        <FullDocument document={document} />
+      </Container>
     </>
   );
 

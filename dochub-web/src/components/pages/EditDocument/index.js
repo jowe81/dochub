@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import FileItem from '../../FileItem';
 import ConstraintListGroup from './ConstraintListGroup';
@@ -116,7 +116,7 @@ function Upload(){
 	return( document && document.constraints &&
     <>
       <Navigation />
-      <div className='main-content'>
+      <Container className='main-content'>
         <Form className=''>
           <Form.Group className="mb-3">
             <Form.Label>Document Title</Form.Label>
@@ -173,7 +173,7 @@ function Upload(){
             />
           </Form.Group>
         </Form>
-      </div>
+      </Container>
     </>
 	)
 }

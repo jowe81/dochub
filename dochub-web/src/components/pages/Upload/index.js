@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 
 import axios from 'axios';
 
@@ -29,7 +29,7 @@ function Upload(){
   return(
     <>
       <Navigation appData={appData}/>
-      <div className='main-content'>
+      <Container className='main-content'>
           <Form className=''>
             <Form.Group className="mb-3">
               <Form.Label>Enter New Document Title</Form.Label>
@@ -39,7 +39,7 @@ function Upload(){
               />
             </Form.Group>
           </Form>
-      </div>
+      </Container>
     </>
 	)
 }

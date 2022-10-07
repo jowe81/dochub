@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import DocTable from './DocTable';
 import Navigation from "../../Navigation";
 
@@ -36,7 +36,7 @@ function Documents() {
   return (
     <>
       <Navigation />
-      <div className="main-content">
+      <Container className="main-content">
         <div className="search-form">
           <Form>
             <Form.Group className="mb-3">
@@ -49,7 +49,7 @@ function Documents() {
           </Form>
         </div>
         <DocTable documents={docs} />
-      </div>
+      </Container>
     </>
   );
 
