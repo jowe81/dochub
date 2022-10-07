@@ -11,9 +11,22 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      userEditable: {
+      userAssignable: {
         type: Sequelize.BOOLEAN,
-      }
+        defaultValue: true,
+      },
+      userCreatable: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
+      allowDelete: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
+      showInSearchResults: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
     });
   },
   async down(queryInterface, Sequelize) {

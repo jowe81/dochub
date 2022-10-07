@@ -20,8 +20,21 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING
     },
-    userEditable: {
+    userAssignable: {
       type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    userCreatable: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    allowDelete: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    showInSearchResults: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     }
 }, {
     sequelize,

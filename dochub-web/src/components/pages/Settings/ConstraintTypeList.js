@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { TextField, Autocomplete, Box } from "@mui/material";
 import { XCircle } from 'react-bootstrap-icons';
 import { Container } from "react-bootstrap";
+import ConstraintTypeSettings from "./ConstraintTypeSettings";
 
 export default function ConstraintTypeList(constraintsTypes) {
 
@@ -49,30 +50,32 @@ export default function ConstraintTypeList(constraintsTypes) {
 
   return (
     <>
-      <p class="lead">Settings</p>
-      <Container className="main-content">
-        <div className="constraintTypeList">      
-          {constraintTypes.length && constraintTypes.map(item => <div className="constraintTypeList-item cursor-pointer" onClick={handleClick} data-constraint-type-id={item.id} key={item.id}>
-            {item.name}
-            <div className="constraintTypeList-item-icon">
-              <XCircle onClick={handleClick} />
-            </div>
-          </div>)}
-        </div>    
-        <Autocomplete
-          className='constraintTypes-autocomplete'
-          clearOnEscape
-          options={constraintTypes}
-          renderInput={(params) => <TextField {...params} label="Type and enter to add, select to edit" />}
-          onKeyUp={handleKeyUp}
-          onChange={(event, value) => {          
-            //toggleConstraintType(event, value);
-          }}
-          value={value}
-          getOptionLabel={(option) => option.name ?? ''}
-          isOptionEqualToValue={(option, value) => true}
-        />
-      </Container>
+      <div className="constraintTypeList">      
+        {constraintTypes.length && constraintTypes.map(item => <div className="constraintTypeList-item cursor-pointer" onClick={handleClick} data-constraint-type-id={item.id} key={item.id}>
+          {item.name}
+          <div className="constraintTypeList-item-icon">
+            <XCircle onClick={handleClick} />
+          </div>
+        </div>)}
+      </div>    
+      <Autocomplete
+        className='constraintTypes-autocomplete'
+        clearOnEscape
+        options={constraintTypes}
+        renderInput={(params) => <TextField {...params} label="Type and enter to add, select to edit" />}
+        onKeyUp={handleKeyUp}
+        onChange={(event, value) => {          
+          //toggleConstraintType(event, value);
+          setValue(value);
+        }}
+        value={value}
+        getOptionLabel={(option) => option.name ?? ''}
+        isOptionEqualToValue={(option, value) => true}
+      />
+
+      <div className="form-section">
+        {value && <ConstraintTypeSettings constraintType={value} />}
+      </div>
       
       
 

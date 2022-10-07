@@ -14,19 +14,31 @@ module.exports = {
      await queryInterface.bulkInsert('ConstraintTypes', [
       {
         name: 'Keyword',
-        userEditable: false,
+        userAssignable: false,
+        allowDelete: false,
+        showInSearchResults: false,
+        userCreatable: false,
       },
       {
         name: 'Location',
-        userEditable: true,
+        userAssignable: true,
+        allowDelete: true,
+        showInSearchResults: false,
+        userCreatable: false,
       },
       {
         name: 'Category',
-        userEditable: true,
+        userAssignable: true,
+        allowDelete: true,
+        showInSearchResults: false,
+        userCreatable: false,
       },
       {
         name: 'Site',
-        userEditable: true,
+        userAssignable: true,
+        allowDelete: true,
+        showInSearchResults: false,
+        userCreatable: false,
       },
       ], {});  
   
