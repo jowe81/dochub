@@ -43,6 +43,10 @@ const getOne = (id) => {
   return db.ConstraintType.findByPk(id);
 }
 
+const update = (reecord) => {
+  return db.ConstraintType.update(record, { where: {id: record.id }});
+}
+
 const remove = (id) => db.ConstraintType.destroy({where: { id }});
 
 module.exports = {
@@ -51,5 +55,6 @@ module.exports = {
   getByNames,
   getAll,
   getOne,
+  update,
   remove,
 };
