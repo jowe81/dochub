@@ -16,7 +16,7 @@ export default function useApplicationData(initialState) {
   const setConstraintTypes = constraintTypes => {
     setData({
       ...data,
-      constraintTypes: { ...constraintTypes},
+      constraintTypes: [ ...constraintTypes ],
       user: { ...user },
     })
     console.log("constraint types updated", constraintTypes);
@@ -32,12 +32,24 @@ export default function useApplicationData(initialState) {
   useEffect(getConstraintTypesFromServer, []);
 
   const updateConstraintType = constraintType => {
+    console.log('updating ', constraintType);
     return axios
       .put(`/api/constraintTypes/${constraintType.id}`, constraintType)
       .then(res => {
         console.log("updated constraint type ", res);
       })
+  }
 
+  const addConstraintType = name => {
+    return axios
+      .post(`/api/constraintTypes`, { name })
+      .then(getConstraintTypesFromServer);
+  }
+
+  const deleteConstraintType = id => {
+    return axios
+    .delete(`/api/constraintTypes/${id}`)
+    .then(getConstraintTypesFromServer);
   }
 
   //User
@@ -48,7 +60,7 @@ export default function useApplicationData(initialState) {
   const setUser = (user) => {
     setData({
       ...data,
-      constraintTypes: { ...data.constraintTypes},
+      constraintTypes: [ ...data.constraintTypes ],
       user: { ...user },
     });
   }
@@ -103,7 +115,10 @@ export default function useApplicationData(initialState) {
     getUserFromServer,
     updateUser,
     logout,
+    constraintTypes: data.constraintTypes,
     updateConstraintType,
+    addConstraintType,
+    deleteConstraintType,
   }
 
 }

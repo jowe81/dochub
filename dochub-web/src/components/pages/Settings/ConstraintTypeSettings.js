@@ -1,15 +1,19 @@
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import { useOutletContext } from "react-router-dom";
 
 export default function ConstraintTypeSettings(props) {
-  console.log(props.constraintType);
 
-  const [constraintType, setConstraintType] = useState(props.constraintType)
-  //useEffect(() => setConstraintType(props.constraintType), []);
+  const appData = useOutletContext();
+
+  const [constraintType, setConstraintType] = useState({ ...props.constraintType });
 
   const updateProperty = (propertyName, e) => {
     const newConstraintType = { ...constraintType };
     newConstraintType[propertyName] = e.target.checked;
+    appData.updateConstraintType(newConstraintType);
+    console.log("old ", constraintType, "new", constraintType);
     setConstraintType(newConstraintType);
   };
 

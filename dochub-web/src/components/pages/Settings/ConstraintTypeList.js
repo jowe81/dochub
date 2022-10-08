@@ -2,49 +2,30 @@ import axios from "axios";
 import { useState, useEffect } from 'react';
 import { TextField, Autocomplete, Box } from "@mui/material";
 import { XCircle } from 'react-bootstrap-icons';
-import { Container } from "react-bootstrap";
+import { useOutletContext } from "react-router-dom";
+
 import ConstraintTypeSettings from "./ConstraintTypeSettings";
 
 export default function ConstraintTypeList(constraintsTypes) {
 
-  const [ constraintTypes, setConstraintTypes ] = useState([]);
+  const appData = useOutletContext();
+
+  const constraintTypes = appData.constraintTypes;
+  console.log("constraintTye", constraintTypes);
   const [ value, setValue ] = useState([]);
+  console.log("value",value);
 
-  const refreshConstraintTypes = () => {
-    axios
-      .get(`/api/constraintTypes`)
-      .then(res => {
-        setConstraintTypes([...res.data]);
-      });
-  }
-
-  useEffect(refreshConstraintTypes, []);
-
-  const deleteConstraintType = id => {
-    axios
-      .delete(`/api/constraintTypes/${id}`)
-      .then(refreshConstraintTypes);
-  }
-
-  const addConstraintType = name => {
-    const exists = constraintTypes.filter(item => item.name === name).length > 0;
-    if (!exists) {
-      return axios
-      .post(`/api/constraintTypes`, { name })
-      .then(refreshConstraintTypes);
-    }
-  }
 
   const handleClick = event => {
     const id = event.target.closest('.constraintTypeList-item').getAttribute('data-constraint-type-id');
     if (id) {
-      deleteConstraintType(id);
+      appData.deleteConstraintType(id);
     }
   }
 
   const handleKeyUp = (e) => {    
     if (e.keyCode === 13) {      
-      addConstraintType(e.target.value);
+      appData.addConstraintType(e.target.value);
     }
   }
 
@@ -66,6 +47,7 @@ export default function ConstraintTypeList(constraintsTypes) {
         onKeyUp={handleKeyUp}
         onChange={(event, value) => {          
           //toggleConstraintType(event, value);
+          console.log("value prop", value);
           setValue(value);
         }}
         value={value}
