@@ -1,9 +1,57 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function useApplicationData(initialState) {
 
-  const [user, setUser] = useState(initialState);
+  const [data, setData] = useState({
+    constraintTypes: [],
+    session: {
+      user: {},
+    }
+  })
+
+
+  //Constraints
+
+  const setConstraintTypes = constraintTypes => {
+    setData({
+      ...data,
+      constraintTypes: { ...constraintTypes},
+      user: { ...user },
+    })
+    console.log("constraint types updated", constraintTypes);
+  }
+
+  const getConstraintTypesFromServer = () => {
+    axios.get(`/api/constraintTypes`)
+      .then(res => {
+        setConstraintTypes(res.data);
+      })
+  }
+
+  useEffect(getConstraintTypesFromServer, []);
+
+  const updateConstraintType = constraintType => {
+    return axios
+      .put(`/api/constraintTypes/${constraintType.id}`, constraintType)
+      .then(res => {
+        console.log("updated constraint type ", res);
+      })
+
+  }
+
+  //User
+
+
+  const user = data.user;
+  
+  const setUser = (user) => {
+    setData({
+      ...data,
+      constraintTypes: { ...data.constraintTypes},
+      user: { ...user },
+    });
+  }
 
   const isLoggedIn = user?.id > 0;
 
@@ -55,6 +103,7 @@ export default function useApplicationData(initialState) {
     getUserFromServer,
     updateUser,
     logout,
+    updateConstraintType,
   }
 
 }
