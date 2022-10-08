@@ -29,8 +29,6 @@ function Upload(){
       axios.get(`/api/documents/${id}`)
         .then(res => {
           const documentRecord = res.data;
-          console.log(`Refreshed doc record: `, documentRecord);
-          console.log(`constraints:`, documentRecord.Constraints);
           _setDocument(documentRecord);
         });
     }

@@ -6,13 +6,11 @@ export default function ConstraintTypeSettings({constraintTypeId}) {
 
   const appData = useOutletContext();
   const [constraintType, setConstraintType] = useState({ ...appData.getConstraintTypeById(constraintTypeId) });
-  console.log("Render CTS", constraintTypeId, constraintType?.name);
 
   if (!constraintTypeId) return (<div>Select a constraint type to edit its settings.</div>);
 
   const updateProperty = (propertyName, e) => {   
     const newValue = e.target.checked ? true : false;
-    //console.log(`--- Updating ${propertyName} from ${constraintType[propertyName]} to `, newValue) ;
     const newConstraintType = { ...constraintType };
     newConstraintType[propertyName] = newValue;
     appData

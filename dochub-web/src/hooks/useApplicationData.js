@@ -47,11 +47,8 @@ export default function useApplicationData(initialState) {
       axios
       .put(`/api/constraintTypes/${constraintType.id}`, constraintType)
       .then(updatedRecord => {
-        console.log('return record: ', updatedRecord);
-
         getConstraintTypesFromServer()
           .then(res => {
-            console.log("Refreshed constraint types from server", res);
             resolve(res);
           });
       });

@@ -1,6 +1,4 @@
-import axios from "axios";
-import { useState, useEffect } from 'react';
-import { TextField, Autocomplete, Box } from "@mui/material";
+import { TextField } from "@mui/material";
 import { XCircle } from 'react-bootstrap-icons';
 import { useOutletContext } from "react-router-dom";
 
@@ -11,10 +9,7 @@ export default function ConstraintTypeList() {
   const appData = useOutletContext();
 
   const constraintTypes = appData.constraintTypes;
-  console.log("cT", constraintTypes);
-  const [ value, setValue ] = useState([]);
   
-
   const handleClick = event => {
     const id = event.target.closest('.constraintTypeList-item').getAttribute('data-constraint-type-id');
     if (id) {
@@ -26,11 +21,13 @@ export default function ConstraintTypeList() {
     console.log("keyup", e.keyCode, e.key);
     if (e.key === "Enter") {      
       appData.addConstraintType(e.target.value);
+      e.target.value='';
     }
   }
 
   return (
     <>
+      <div> Existing Contraint Types:</div>
       <div className="constraintTypeList">      
         {constraintTypes.length && constraintTypes.map(item => <div className="constraintTypeList-item cursor-pointer" onClick={handleClick} data-constraint-type-id={item.id} key={item.id}>
           {item.name}
@@ -39,29 +36,17 @@ export default function ConstraintTypeList() {
           </div>
         </div>)}
       </div>    
+      <div>Type and hit enter to add a constraint type:</div>
       <TextField
-        className="form-input"
+        className="w-100"
         label="Type and hit enter to add a constraint type"
         onKeyUp={function(e) { 
           handleKeyUp (e);          
         }}
       />
-      <Autocomplete
-        className='constraintTypes-autocomplete'
-        clearOnEscape
-        options={constraintTypes}
-        renderInput={(params) => <TextField {...params} label="Type and enter to add, select to edit" />}
-        onKeyUp={handleKeyUp}
-        onChange={(event, value) => { 
-          console.log("AC CHANGE", value)         ;
-          setValue(value);
-        }}
-        value={value}
-        getOptionLabel={(option) => option.name ?? ''}
-        isOptionEqualToValue={(option, value) => true}
-      />
 
       <div className="form-section">
+        <div>Constraint Type Settings:</div>
         {constraintTypes.map(item => <ConstraintTypeSettings constraintTypeId={item.id} />)}
       </div>
       
