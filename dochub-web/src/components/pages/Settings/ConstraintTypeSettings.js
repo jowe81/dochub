@@ -1,25 +1,30 @@
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 export default function ConstraintTypeSettings({constraintTypeId}) {
 
-  
   const appData = useOutletContext();
-  
+  const [constraintType, setConstraintType] = useState({ ...appData.getConstraintTypeById(constraintTypeId) });
+  console.log("Render CTS", constraintTypeId, constraintType?.name);
+
   if (!constraintTypeId) return (<div>Select a constraint type to edit its settings.</div>);
 
-  //Grab record from appData
-  const constraintType =  appData.constraintTypes.filter(item => item.id === constraintTypeId)[0];
-
-  const updateProperty = (propertyName, e) => {    
+  const updateProperty = (propertyName, e) => {   
+    const newValue = e.target.checked ? true : false;
+    //console.log(`--- Updating ${propertyName} from ${constraintType[propertyName]} to `, newValue) ;
     const newConstraintType = { ...constraintType };
-    newConstraintType[propertyName] = e.target.checked;
-    appData.updateConstraintType(newConstraintType);
+    newConstraintType[propertyName] = newValue;
+    appData
+      .updateConstraintType(newConstraintType)
+      .then(res => {
+        const newConstraintType = { ...constraintType };
+        newConstraintType[propertyName] = newValue;
+        setConstraintType(newConstraintType);
+      });
   };
 
-  return (
+  return (constraintType &&
     <>
       <FormGroup>
         <span>Settings for {constraintType.name}</span>

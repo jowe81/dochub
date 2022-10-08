@@ -44,9 +44,19 @@ const getOne = (id) => {
 }
 
 const update = (updatedRecord) => {
-  //delete updatedRecord.id;
-  console.log("about to execute" , updatedRecord);
-  return db.ConstraintType.update(updatedRecord, { where: {id: updatedRecord.id }});
+  return new Promise((resolve, reject) => {
+    db.ConstraintType
+      .update(updatedRecord, { where: {id: updatedRecord.id }})
+      .then(res => {
+        if (res > 0) {
+          getOne(updatedRecord.id)
+            .then(record => resolve(record));
+        } else {
+          reject("Update failed");
+        }
+      });
+  })
+  return 
 }
 
 const remove = (id) => db.ConstraintType.destroy({where: { id }});

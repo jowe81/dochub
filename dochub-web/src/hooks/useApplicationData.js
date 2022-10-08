@@ -22,19 +22,40 @@ export default function useApplicationData(initialState) {
   }
 
   const getConstraintTypesFromServer = () => {
-    axios
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/constraintTypes`)
       .then(res => {
         setConstraintTypes(res.data);
-      })
+        resolve(res.data);
+      });
+    });
   }
 
-  useEffect(getConstraintTypesFromServer, []);
+  useEffect(() => {
+    getConstraintTypesFromServer();
+  }, []);
+
+
+  const getConstraintTypeById = id => {
+    return data.constraintTypes.filter(item => item.id === id)[0];
+  }
 
   const updateConstraintType = constraintType => {
-    console.log('updating ', constraintType);
-    return axios
-      .put(`/api/constraintTypes/${constraintType.id}`, constraintType);
+    console.log('updating to: ', constraintType);
+    return new Promise((resolve, reject) => {
+      axios
+      .put(`/api/constraintTypes/${constraintType.id}`, constraintType)
+      .then(updatedRecord => {
+        console.log('return record: ', updatedRecord);
+
+        getConstraintTypesFromServer()
+          .then(res => {
+            console.log("Refreshed constraint types from server", res);
+            resolve(res);
+          });
+      });
+    })
   }
 
   const addConstraintType = name => {
@@ -110,6 +131,7 @@ export default function useApplicationData(initialState) {
     updateConstraintType,
     addConstraintType,
     deleteConstraintType,
+    getConstraintTypeById,
   }
 
 }

@@ -6,12 +6,12 @@ import { useOutletContext } from "react-router-dom";
 
 import ConstraintTypeSettings from "./ConstraintTypeSettings";
 
-export default function ConstraintTypeList(constraintsTypes) {
+export default function ConstraintTypeList() {
 
   const appData = useOutletContext();
 
   const constraintTypes = appData.constraintTypes;
-  
+  console.log("cT", constraintTypes);
   const [ value, setValue ] = useState([]);
   
 
@@ -23,7 +23,8 @@ export default function ConstraintTypeList(constraintsTypes) {
   }
 
   const handleKeyUp = (e) => {    
-    if (e.keyCode === 13) {      
+    console.log("keyup", e.keyCode, e.key);
+    if (e.key === "Enter") {      
       appData.addConstraintType(e.target.value);
     }
   }
@@ -38,13 +39,21 @@ export default function ConstraintTypeList(constraintsTypes) {
           </div>
         </div>)}
       </div>    
+      <TextField
+        className="form-input"
+        label="Type and hit enter to add a constraint type"
+        onKeyUp={function(e) { 
+          handleKeyUp (e);          
+        }}
+      />
       <Autocomplete
         className='constraintTypes-autocomplete'
         clearOnEscape
         options={constraintTypes}
         renderInput={(params) => <TextField {...params} label="Type and enter to add, select to edit" />}
         onKeyUp={handleKeyUp}
-        onChange={(event, value) => {          
+        onChange={(event, value) => { 
+          console.log("AC CHANGE", value)         ;
           setValue(value);
         }}
         value={value}
@@ -53,7 +62,7 @@ export default function ConstraintTypeList(constraintsTypes) {
       />
 
       <div className="form-section">
-        {value && <ConstraintTypeSettings constraintTypeId={value.id} />}
+        {constraintTypes.map(item => <ConstraintTypeSettings constraintTypeId={item.id} />)}
       </div>
       
       
