@@ -19,11 +19,11 @@ export default function useApplicationData(initialState) {
       constraintTypes: [ ...constraintTypes ],
       user: { ...user },
     })
-    console.log("constraint types updated", constraintTypes);
   }
 
   const getConstraintTypesFromServer = () => {
-    axios.get(`/api/constraintTypes`)
+    axios
+      .get(`/api/constraintTypes`)
       .then(res => {
         setConstraintTypes(res.data);
       })
@@ -34,10 +34,7 @@ export default function useApplicationData(initialState) {
   const updateConstraintType = constraintType => {
     console.log('updating ', constraintType);
     return axios
-      .put(`/api/constraintTypes/${constraintType.id}`, constraintType)
-      .then(res => {
-        console.log("updated constraint type ", res);
-      })
+      .put(`/api/constraintTypes/${constraintType.id}`, constraintType);
   }
 
   const addConstraintType = name => {
@@ -48,8 +45,8 @@ export default function useApplicationData(initialState) {
 
   const deleteConstraintType = id => {
     return axios
-    .delete(`/api/constraintTypes/${id}`)
-    .then(getConstraintTypesFromServer);
+      .delete(`/api/constraintTypes/${id}`)
+      .then(getConstraintTypesFromServer);
   }
 
   //User
@@ -68,14 +65,12 @@ export default function useApplicationData(initialState) {
   const isLoggedIn = user?.id > 0;
 
   const login = ({email, password}) => {
-    return new Promise((resolve, reject) => {
-      axios.post("/api/session/login", {email, password})
-        .then(res => {
-          setUser({...res.data});
-          console.log(`Logged in as ${res.data.first_name}`);
-          resolve();
-        }).catch(reject);
-    })    
+    return axios
+      .post("/api/session/login", {email, password})
+      .then(res => {
+        setUser({...res.data});
+        console.log(`Logged in as ${res.data.email}`);
+      });
   }
 
 
@@ -88,15 +83,11 @@ export default function useApplicationData(initialState) {
   };
 
   const updateUser = (user) => {
-    return new Promise((resolve, reject) => {
-      axios.put("/api/users", user)
-        .then(res => {
-          setUser(res.data);
-          console.log(`Updated user record successfully`);
-          resolve();
-        })
-        .catch(reject);
-    })
+    return axios
+      .put("/api/users", user)
+      .then(res => {
+        setUser(res.data);
+      });
   }
 
   const logout = () => {

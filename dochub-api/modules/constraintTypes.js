@@ -43,8 +43,10 @@ const getOne = (id) => {
   return db.ConstraintType.findByPk(id);
 }
 
-const update = (reecord) => {
-  return db.ConstraintType.update(record, { where: {id: record.id }});
+const update = (updatedRecord) => {
+  //delete updatedRecord.id;
+  console.log("about to execute" , updatedRecord);
+  return db.ConstraintType.update(updatedRecord, { where: {id: updatedRecord.id }});
 }
 
 const remove = (id) => db.ConstraintType.destroy({where: { id }});

@@ -11,10 +11,9 @@ export default function ConstraintTypeList(constraintsTypes) {
   const appData = useOutletContext();
 
   const constraintTypes = appData.constraintTypes;
-  console.log("constraintTye", constraintTypes);
+  
   const [ value, setValue ] = useState([]);
-  console.log("value",value);
-
+  
 
   const handleClick = event => {
     const id = event.target.closest('.constraintTypeList-item').getAttribute('data-constraint-type-id');
@@ -46,8 +45,6 @@ export default function ConstraintTypeList(constraintsTypes) {
         renderInput={(params) => <TextField {...params} label="Type and enter to add, select to edit" />}
         onKeyUp={handleKeyUp}
         onChange={(event, value) => {          
-          //toggleConstraintType(event, value);
-          console.log("value prop", value);
           setValue(value);
         }}
         value={value}
@@ -56,7 +53,7 @@ export default function ConstraintTypeList(constraintsTypes) {
       />
 
       <div className="form-section">
-        {value && <ConstraintTypeSettings constraintType={value} />}
+        {value && <ConstraintTypeSettings constraintTypeId={value.id} />}
       </div>
       
       

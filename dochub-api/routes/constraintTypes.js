@@ -12,6 +12,23 @@ router.get('/:id', function(req, res, next) {
   })
 });
 
+router.put('/:id', errorIfUnauthorized, (req, res, next) => {
+  const updatedRecord = { ...req.body };
+  console.log("Updating to: ", updatedRecord);
+  constraintTypes
+    .update(updatedRecord)
+    .then(data => {
+      console.log("returned with ", data);
+      res.json(data);
+    });
+});
+
+router.delete("/:id", errorIfUnauthorized, (req, res) => {
+  constraintTypes
+    .remove(req.params.id)
+    .then((data) => res.json(data));
+});
+
 router.get('/', function(req, res, next) {
   constraintTypes
     .getAll()
@@ -30,12 +47,6 @@ router.post("/", errorIfUnauthorized, (req, res, next) => {
   .catch(e => {
     res.status(500).send(`${e}`);
   });
-});
-
-router.delete("/:id", errorIfUnauthorized, (req, res) => {
-  constraintTypes
-    .remove(req.params.id)
-    .then((data) => res.json(data));
 });
 
 module.exports = router;

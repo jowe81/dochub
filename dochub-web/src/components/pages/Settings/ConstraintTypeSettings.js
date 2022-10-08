@@ -3,18 +3,20 @@ import { useState } from "react";
 
 import { useOutletContext } from "react-router-dom";
 
-export default function ConstraintTypeSettings(props) {
+export default function ConstraintTypeSettings({constraintTypeId}) {
 
+  
   const appData = useOutletContext();
+  
+  if (!constraintTypeId) return (<div>Select a constraint type to edit its settings.</div>);
 
-  const [constraintType, setConstraintType] = useState({ ...props.constraintType });
+  //Grab record from appData
+  const constraintType =  appData.constraintTypes.filter(item => item.id === constraintTypeId)[0];
 
-  const updateProperty = (propertyName, e) => {
+  const updateProperty = (propertyName, e) => {    
     const newConstraintType = { ...constraintType };
     newConstraintType[propertyName] = e.target.checked;
     appData.updateConstraintType(newConstraintType);
-    console.log("old ", constraintType, "new", constraintType);
-    setConstraintType(newConstraintType);
   };
 
   return (
