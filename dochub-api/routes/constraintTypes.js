@@ -45,7 +45,7 @@ router.post("/", errorIfUnauthorized, (req, res, next) => {
     res.json(constraintType);
   })
   .catch(e => {
-    res.status(500).send(`${e}`);
+    res.json({'success': false, error_message: e});
   });
 });
 

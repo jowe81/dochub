@@ -8,11 +8,17 @@ const db = require('../models');
  */
 const create = ({ name }) => {
   return new Promise((resolve, reject) => {
-    db.ConstraintType.create({ name })
-    .then(constraintType => {
-      resolve(constraintType);        
-    });
-});
+    getAll({where: {name}})
+      .then(res => {
+        if (res.length>0) {
+          return reject(`Constraint type '${name}' already exists.`);
+        }
+        db.ConstraintType.create({ name })
+        .then(constraintType => {
+          resolve(constraintType);        
+        });
+      }).catch(reject);
+  });
 };
 
 const getByName = name => {
@@ -35,8 +41,8 @@ const getByNames = names => {
   });
 }
 
-const getAll = () => {
-  return db.ConstraintType.findAll();
+const getAll = (where) => {
+  return db.ConstraintType.findAll(where);
 }
 
 const getOne = (id) => {

@@ -47,7 +47,7 @@ export default function ConstraintTypeList() {
 
       <div className="form-section">
         <div>Constraint Type Settings:</div>
-        {constraintTypes.map(item => <ConstraintTypeSettings constraintTypeId={item.id} />)}
+        {constraintTypes.map(item => <ConstraintTypeSettings key={item.id} constraintTypeId={item.id} />)}
       </div>
       
       

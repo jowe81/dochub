@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   ConstraintType.init({
     name: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique: true,
     },
     userAssignable: {
       type: DataTypes.BOOLEAN,
