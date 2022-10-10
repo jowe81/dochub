@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
 import { XCircle } from 'react-bootstrap-icons';
 import { useOutletContext } from "react-router-dom";
-
+import { useState } from "react";
 import ConstraintTypeSettings from "./ConstraintTypeSettings";
+import Message from "../../Message";
 
 export default function ConstraintTypeList() {
 
@@ -10,6 +11,9 @@ export default function ConstraintTypeList() {
 
   const constraintTypes = appData.constraintTypes;
   
+
+  const [msg, setMsg] = useState('');
+
   const handleClick = event => {
     const id = event.target.closest('.constraintTypeList-item').getAttribute('data-constraint-type-id');
     if (id) {
@@ -18,16 +22,26 @@ export default function ConstraintTypeList() {
   }
 
   const handleKeyUp = (e) => {    
-    console.log("keyup", e.keyCode, e.key);
     if (e.key === "Enter") {      
-      appData.addConstraintType(e.target.value);
-      e.target.value='';
+      appData
+        .addConstraintType(e.target.value)
+        .then(res => {
+          if (res.success === false) {
+            setMsg(res.error_message);
+            console.log(res.error_message);
+          } else {
+            //Added successfully, clear text field
+            setMsg('');
+            e.target.value='';
+          }
+        });
     }
   }
 
   return (
     <>
-      <div> Existing Contraint Types:</div>
+      <div className="section-subheader">Existing Contraint Types:</div>
+
       <div className="constraintTypeList">      
         {constraintTypes.length && constraintTypes.map(item => <div className="constraintTypeList-item cursor-pointer" onClick={handleClick} data-constraint-type-id={item.id} key={item.id}>
           {item.name}
@@ -36,17 +50,15 @@ export default function ConstraintTypeList() {
           </div>
         </div>)}
       </div>    
-      <div>Type and hit enter to add a constraint type:</div>
+      <div className="section-subheader">Type and hit enter to add a constraint type:</div>
       <TextField
         className="w-100"
-        label="Type and hit enter to add a constraint type"
         onKeyUp={function(e) { 
           handleKeyUp (e);          
         }}
       />
-
+      <Message msg={msg} />
       <div className="form-section">
-        <div>Constraint Type Settings:</div>
         {constraintTypes.map(item => <ConstraintTypeSettings key={item.id} constraintTypeId={item.id} />)}
       </div>
       

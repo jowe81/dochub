@@ -42,7 +42,6 @@ export default function useApplicationData(initialState) {
   }
 
   const updateConstraintType = constraintType => {
-    console.log('updating to: ', constraintType);
     return new Promise((resolve, reject) => {
       axios
       .put(`/api/constraintTypes/${constraintType.id}`, constraintType)
@@ -58,7 +57,12 @@ export default function useApplicationData(initialState) {
   const addConstraintType = name => {
     return axios
       .post(`/api/constraintTypes`, { name })
-      .then(getConstraintTypesFromServer);
+      .then(res => {
+        if (res.data.success !== false) {
+          return getConstraintTypesFromServer();
+        }
+        return res.data;
+      });
   }
 
   const deleteConstraintType = id => {

@@ -8,7 +8,7 @@ export default function Settings() {
     <>
       <Navigation />
       <Container className="main-content">
-        <span>Manage Constraint Types</span>
+        <div class="section-header">Manage Constraint Types</div>
         <ConstraintTypeList />  
         
       </Container>

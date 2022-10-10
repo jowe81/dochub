@@ -25,7 +25,7 @@ export default function ConstraintTypeSettings({constraintTypeId}) {
   return (constraintType &&
     <>
       <FormGroup>
-        <span>Settings for {constraintType.name}</span>
+        <div className="section-subheader">Settings for {constraintType.name}</div>
         <FormControlLabel
           control={
             <Checkbox 
