@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
     showInSearchResults: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    includeInSearchCriteria: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     }
 }, {
     sequelize,

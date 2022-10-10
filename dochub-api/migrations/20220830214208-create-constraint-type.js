@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
       },
       userAssignable: {
         type: Sequelize.BOOLEAN,
@@ -23,6 +24,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
       },
+      includeInSearchCriteria: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },  
       showInSearchResults: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
