@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Form } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useOutletContext } from 'react-router-dom';
 import FileItem from '../../FileItem';
 import ConstraintListGroup from './ConstraintListGroup';
 import './EditDocument.scss';
@@ -12,6 +12,7 @@ function Upload(){
   const [constraints, setConstraints] = useState({}); 
   const [document, setDocument] = useState({title:'', author:'', description:''});
   const params = useParams();
+  const appData = useOutletContext();
 
   //Updated state for nested object
   const _setDocument = documentRecord => {
@@ -82,7 +83,10 @@ function Upload(){
     _setDocument(document);
   }
   
+  
+
   const toggleConstraint = (event, selectedConstraint, constraintTypeId) => {
+    let constraintType = appData.getConstraintTypeById(constraintTypeId);
     //Find record if it exists
     let id;
     if (selectedConstraint?.id) {
@@ -96,12 +100,15 @@ function Upload(){
         id = constraintRecord.id;
       } else if (value) {
         //Got a newly typed constraint that we need to add. Figure out constraintTypeId??
-        axios.post(`/api/constraints`, {
-          label: value,
-          constraintTypeId,
-        }).then(res => {
-          retrieveAllConstraints();
-        })
+        console.log(constraintType.name, constraintType.userCreatable);
+        if (constraintType.userCreatable) {
+          axios.post(`/api/constraints`, {
+            label: value,
+            constraintTypeId,
+          }).then(res => {
+            retrieveAllConstraints();
+          });  
+        }
       }
     }
     if (id) {
@@ -109,6 +116,25 @@ function Upload(){
         constraintId: id,
       }).then(refreshDocumentData);
     }
+  }
+
+  const getConstraintTypesMarkup = () => {
+    return appData
+      .constraintTypes
+      .filter(item => item.userAssignable)
+      .map(item => {
+        return (
+          <Form.Group className="mb-3">
+            <Form.Label>{item.name}(s):</Form.Label>
+            <ConstraintListGroup 
+              constraints = {constraints}
+              toggleConstraint = {toggleConstraint}
+              document = {document}
+              constraintType = {item}
+            />
+          </Form.Group>    
+        );
+      });
   }
 
 	return( document && document.constraints &&
@@ -128,6 +154,7 @@ function Upload(){
             <Form.Label>Short description:</Form.Label>
             <Form.Control as="textarea" rows={3} data-field-name="description" value={document.description} onChange={handleChange} onBlur={handleUpdate}/>
           </Form.Group>
+          {/* { getConstraintTypesMarkup() } */}
           <Form.Group className="mb-3">
             <Form.Label>Category(ies):</Form.Label>
             <ConstraintListGroup 
