@@ -2,10 +2,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import ConstraintList from './ConstraintList';
 import { useState } from "react";
+import { useOutletContext } from 'react-router-dom';
 
 export default function ConstraintListGroup(props) {
   const {constraints, toggleConstraint, document, constraintTypeId} = props; 
-
+  const appData = useOutletContext();
 
   const [value, setValue] = useState("");
 
@@ -21,11 +22,13 @@ export default function ConstraintListGroup(props) {
           if (e.keyCode === 13) {
             //On Return 
             setValue('');
-            toggleConstraint(e, e.target.value, constraintTypeId);
+            appData.applyConstraint(document.id, null, e.target.value, true, true, constraintTypeId);
+            //toggleConstraint(e, e.target.value, constraintTypeId);
           }
         }}
         onChange={(event, value) => {          
-          toggleConstraint(event, value);
+          //appData.applyConstraint(document.id, null, value, true, true, constraintTypeId);
+          //toggleConstraint(event, value);
         }}
         value={value}
         getOptionLabel={(option) => option.label ?? ''}

@@ -17,7 +17,7 @@ module.exports = {
         userAssignable: false,
         allowDelete: false,
         showInSearchResults: false,
-        userCreatable: false,
+        userCreatable: true,
       },
       {
         name: 'Location',
@@ -28,13 +28,6 @@ module.exports = {
       },
       {
         name: 'Category',
-        userAssignable: true,
-        allowDelete: true,
-        showInSearchResults: false,
-        userCreatable: false,
-      },
-      {
-        name: 'Site',
         userAssignable: true,
         allowDelete: true,
         showInSearchResults: false,

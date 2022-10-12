@@ -1,6 +1,6 @@
 import { XCircle } from 'react-bootstrap-icons';
 
-export default function ConstraintList({constraints, buttons, toggleConstraint}) {
+export default function ConstraintList({constraints, buttons, toggleConstraint, constraintType}) {
 
   const handleClick = event => {
     const id = event.target.closest('.constraintList-item').getAttribute('data-constraint-id');
@@ -15,7 +15,7 @@ export default function ConstraintList({constraints, buttons, toggleConstraint})
           {buttons?.remove && (<XCircle onClick={handleClick} />)}
         </div>
       </div>)}
-      {constraints.length === 0 && (<span className="constraintList-placeholder">Keywords will appear here</span>)}
+      {constraints.length === 0 && (<span className="constraintList-placeholder">{constraintType?.name}</span>)}
     </div>    
   );
 }
