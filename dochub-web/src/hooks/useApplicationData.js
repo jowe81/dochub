@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import store from '../redux/store';
+
 
 export default function useApplicationData(initialState) {
 
@@ -181,6 +183,7 @@ export default function useApplicationData(initialState) {
       .post("/api/session/login", {email, password})
       .then(res => {
         setUser({...res.data});
+        store.dispatch({type: 'session/loggedIn', payload: {...res.data}});
         console.log(`Logged in as ${res.data.email}`);
       });
   }
@@ -205,14 +208,15 @@ export default function useApplicationData(initialState) {
   const logout = () => {
     return axios.get("/api/session/logout")
       .then(() => {
+        store.dispatch({type: 'session/loggedOut', payload: {}});
         setUser({});
-        console.log("Logged out successfully");
+        console.log("Logged out successfully", store.getState());
       });
   }
 
   return {
     setUser,
-    user,
+    user: store.getState().session,
     isLoggedIn,
     login,
     getUserFromServer,
